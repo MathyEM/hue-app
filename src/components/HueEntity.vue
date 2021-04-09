@@ -2,20 +2,33 @@
     <div>
         <h3>{{ id }}: {{ lightName }}</h3>
         <p>On: {{ state.on }}</p>
-        <button @click="controlLight(id, !state.on)">Toggle light</button>
+        <HueDimmerSwitch :id="id" :state="state" :toggle="controlLight" :brighten="controlLight" :dim="controlLight" />
     </div>
 </template>
 
 <script>
 import store from '../store'
 import axios from 'axios'
+import HueDimmerSwitch from './HueDimmerSwitch'
 
 export default {
     name: 'HueEntity',
+    components: {
+        HueDimmerSwitch
+    },
     props: {
-        id: String,
-        lightName: String,
-        state: Object,
+        id: {
+            type: String,
+            required: true
+        },
+        state: {
+            type: Object,
+            required: true
+        },
+        lightName: {
+            type: String,
+            required: true
+        },
     },
     data() {
         return {
