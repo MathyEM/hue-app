@@ -2,7 +2,7 @@
     <div>
         <h3>{{ id }}: {{ lightName }}</h3>
         <p>On: {{ state.on }}</p>
-        <HueDimmerSwitch :id="id" :state="state" :toggle="controlLight" :brighten="controlLight" :dim="controlLight" />
+        <HueDimmerSwitch :id="id" :state="state" :controlLight="controlLight" />
     </div>
 </template>
 
@@ -35,14 +35,24 @@ export default {
         }
     },
     methods: {
-        async controlLight (lightId, on) {
+        async controlLight (lightId, on, bri, hue, sat) {
             try {
                 return await axios.put(
                     `http://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/lights/${lightId}/state`,
-                    {"on": on}
+                    {
+                        on,
+                        ...(bri && { bri }),
+                        ...(hue && { hue }),
+                        ...(sat && { sat })
+                    }
                 ).then(function () {
                     let temp = store.state.lights;
-                    temp[lightId].state.on = on;
+                    temp[lightId].state = {
+                        on,
+                        ...(bri && { bri }),
+                        ...(hue && { hue }),
+                        ...(sat && { sat })
+                    }
                     store.commit('updateLights', temp);
                 })
             } catch (error) {
