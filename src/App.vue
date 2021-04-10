@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      pollingInterval: process.env.VUE_APP_POLLING_RATE || 1000,
+      pollingInterval: process.env.VUE_APP_POLLING_RATE || 5000,
       updateHueStateInterval: Function,
     };
   },
