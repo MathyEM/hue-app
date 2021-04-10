@@ -81,15 +81,17 @@ export default {
 .hue-switch-container {
     $gray: dimgray;
     $off-white: whitesmoke;
+    $border-radius: 2px;
+    $switch-size: 6rem;
 
     display: grid;
     grid-template-rows: 2fr 1fr 1fr 2fr;
     margin: auto;
     margin-bottom: 50px;
-    width: 4rem;
-    height: 10rem;
-    border: 0.05rem lightgray solid;
-    border-radius: 2px;
+    width: $switch-size;
+    height: 2.5 * $switch-size;
+    border: 1px lightgray solid;
+    border-radius: $border-radius;
 
     .switch.btn {
         font-weight: bolder;
@@ -103,8 +105,8 @@ export default {
         background-color: $off-white;
 
         &:active {
-            background-color: darken($off-white, 5%);
-            box-shadow: inset 0px 0px 0.1px 0.5px gray;
+            background-color: darken($off-white, 6%);
+            box-shadow: inset -0.5px 0.5px 0.5px 0.2px transparentize(gray, 0.3);
         }
 
         &:focus {
@@ -112,16 +114,16 @@ export default {
         }
 
         &:last-child {
-            border-bottom-left-radius: 2%;
-            border-bottom-right-radius: 2%;
+            border-bottom-left-radius: $border-radius;
+            border-bottom-right-radius: $border-radius;
         }
         &:first-child {
-            border-top-left-radius: 2%;
-            border-top-right-radius: 2%;
+            border-top-left-radius: $border-radius;
+            border-top-right-radius: $border-radius;
         }
 
         &:not(:last-child) {
-            border-bottom: 0.05rem lightgray solid;
+            border-bottom: 1px lightgray solid;
         }
 
         &.btn-brighten div, &.btn-dim div {
