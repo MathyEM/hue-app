@@ -47,13 +47,13 @@ export default {
                     }
                 ).then(function () {
                     let temp = store.state.lights;
-                    temp[lightId].state = {
-                        on,
-                        ...(bri && { bri }),
-                        ...(hue && { hue }),
-                        ...(sat && { sat })
-                    }
+                    on !== undefined ? temp[lightId].state.on = on : ""
+                    bri !== undefined ? temp[lightId].state.bri = bri : ""
+                    hue !== undefined ? temp[lightId].state.hue = hue : ""
+                    sat !== undefined ? temp[lightId].state.sat = sat : ""
+
                     store.commit('updateLights', temp);
+                    console.log(store.state.lights[lightId].state);
                 })
             } catch (error) {
                 console.log(error);
