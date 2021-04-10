@@ -1,6 +1,6 @@
 <template>
     <div class="hue-switch-container">
-        <button class="switch btn btn-on" @click="toggle(id, true)">
+        <button class="switch btn btn-on" @click="controlLight(id, true)">
             <div class="icon-wrap">I</div>
         </button>
         <button class="switch btn btn-brighten">
@@ -9,7 +9,7 @@
         <button class="switch btn btn-dim">
             <div class="icon"></div>
         </button>
-        <button class="switch btn btn-off" @click="toggle(id, false)">
+        <button class="switch btn btn-off" @click="controlLight(id, false)">
             <div class="icon-wrap">O</div>
         </button>
     </div>
@@ -30,15 +30,7 @@ export default {
             type: Object,
             required: true
         },
-        toggle: {
-            type: Function,
-            required: true
-        },
-        brighten: {
-            type: Function,
-            required: true
-        },
-        dim: {
+        controlLight: {
             type: Function,
             required: true
         },
