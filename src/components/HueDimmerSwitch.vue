@@ -3,10 +3,10 @@
         <button class="switch btn btn-on" @click="controlLight(id, true)">
             <div class="icon-wrap">I</div>
         </button>
-        <button class="switch btn btn-brighten">
+        <button class="switch btn btn-brighten" @mousedown="startBrightenInterval()" @mouseup="stopBrightenInterval()" @mouseleave="stopBrightenInterval()">
             <div class="icon"></div>
         </button>
-        <button class="switch btn btn-dim">
+        <button class="switch btn btn-dim" @mousedown="startDimmingInterval()" @mouseup="stopDimmingInterval()" @mouseleave="stopDimmingInterval()">
             <div class="icon"></div>
         </button>
         <button class="switch btn btn-off" @click="controlLight(id, false)">
@@ -37,10 +37,42 @@ export default {
     },
     data() {
         return {
+            dimmingStep: 10,
+            dimmingSpeed: 200,
+            minBri: 1,
+            maxBri: 254,
+            startDimming: Function,
+            startBrighten: Function,
         }
     },
     methods: {
+        startDimmingInterval: function() {
+            let props = this.$props;
+            let data = this.$data;
 
+            props.controlLight(props.id, true, (props.state.bri >= data.minBri+data.dimmingStep ? props.state.bri-data.dimmingStep : data.minBri)); // Run function immediately instead of waiting for initial delay of setInterval
+
+            data.startDimming = setInterval(function() {
+                props.controlLight(props.id, true, (props.state.bri >= data.minBri+data.dimmingStep ? props.state.bri-data.dimmingStep : data.minBri));
+            }, this.$data.dimmingSpeed)
+        },
+        stopDimmingInterval: function() {
+            clearInterval(this.$data.startDimming);
+        },
+
+        startBrightenInterval: function () {
+            let props = this.$props;
+            let data = this.$data;
+
+            props.controlLight(props.id, true, (props.state.bri <= data.maxBri-data.dimmingStep ? props.state.bri+data.dimmingStep : data.maxBri)); // Run function immediately instead of waiting for initial delay of setInterval
+
+            data.startBrighten = setInterval(function() {
+                props.controlLight(props.id, true, (props.state.bri <= data.maxBri-data.dimmingStep ? props.state.bri+data.dimmingStep : data.maxBri));
+            }, this.$data.dimmingSpeed)
+        },
+        stopBrightenInterval: function() {
+            clearInterval(this.$data.startBrighten);
+        },
     }
 }
 </script>
