@@ -19,7 +19,8 @@ export default {
   },
   data() {
     return {
-
+      pollingInterval: process.env.VUE_APP_POLLING_RATE || 1000,
+      updateHueStateInterval: Function,
     };
   },
   computed: {
@@ -27,10 +28,22 @@ export default {
       return store.state.lights;
     }
   },
+  methods: {
+
+},
   async mounted() {
-    const response = await axios.get(`http://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/lights`);
-    store.commit('updateLights', response.data);
-    console.log(store.state.lights);
+    const updateHueState = async () => {
+      try {
+        const response = await axios.get(`http://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/lights`);
+          store.commit('updateLights', response.data);
+          console.log(store.state.lights);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    updateHueState();
+    this.$data.updateHueStateInterval = setInterval(updateHueState, this.$data.pollingInterval)
   },
   
 }
