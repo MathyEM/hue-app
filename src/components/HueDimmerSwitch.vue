@@ -3,10 +3,10 @@
         <button class="switch btn btn-on" @click="controlLight(id, true)">
             <div class="icon-wrap">I</div>
         </button>
-        <button class="switch btn btn-brighten" @mousedown="startBrightenInterval()" @mouseup="stopBrightenInterval()" @mouseleave="stopBrightenInterval()">
+        <button class="switch btn btn-brighten" @mousedown="startBrightenInterval()" @touchstart="startBrightenInterval()" @mouseup="stopBrightenInterval()" @mouseleave="stopBrightenInterval()" @touchend="stopBrightenInterval()">
             <div class="icon"></div>
         </button>
-        <button class="switch btn btn-dim" @mousedown="startDimmingInterval()" @mouseup="stopDimmingInterval()" @mouseleave="stopDimmingInterval()">
+        <button class="switch btn btn-dim" @mousedown="startDimmingInterval()" @touchstart="startDimmingInterval()" @mouseup="stopDimmingInterval()" @mouseleave="stopDimmingInterval()" @touchend="stopDimmingInterval()">
             <div class="icon"></div>
         </button>
         <button class="switch btn btn-off" @click="controlLight(id, false)">
