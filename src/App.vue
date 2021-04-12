@@ -2,7 +2,7 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png"><br>
     <div v-for="light, index in lights" :key="index">
-      <HueEntity :lightName="light.name" :state="light.state" :id="index"/>
+      <HueEntity :lightName="light.name" :state="light.state" :id="index" :localColor="localColor[index]"/>
     </div>
   </div>
 </template>
@@ -26,6 +26,9 @@ export default {
   computed: {
     lights() {
       return store.state.lights;
+    },
+    localColor() {
+      return store.state.localColor;
     }
   },
   methods: {
@@ -36,12 +39,13 @@ export default {
       try {
         const response = await axios.get(`http://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/lights`);
           store.commit('updateLights', response.data);
-          console.log(store.state.lights);
+          store.commit('setHSL');
+          console.log("new localColor:", store.state.localColor);
+          console.log("lights:", store.state.lights);
       } catch (error) {
         console.log(error);
       }
     }
-
     updateHueState();
     this.$data.updateHueStateInterval = setInterval(updateHueState, this.$data.pollingInterval)
   },
