@@ -1,71 +1,137 @@
-import tinycolor from 'tinycolor2';
 import Vue from 'vue'
 import Vuex from 'vuex'
-const converter = require('@q42philips/hue-color-converter')
+import tinycolor from 'tinycolor2'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    lights: {},
-    localColor: [],
-    convertColorRange: (prop, from, to) => {
-      const propRatio = to/from;
+	state: {
+		lights: {},
+		localColors: {
+			// hue: 0-359,
+			// saturation: 0-100,
+			// luminosity: 0-100,
+		},
+		convertColorRange: (prop, from, to) => {
+			const propRatio = to/from;
+		
+			return prop*propRatio;
+		},
+	},
+	getters : {
+		getHSL: (state) => (light) => {
+			const hue = state.convertColorRange(light.state.hue, 65535, 360); // Convert pHue to radial hue
+			const sat = state.convertColorRange(light.state.sat, 254, 100);
+			const bri = state.convertColorRange(light.state.bri, 254, 100);
+			
+			const color = tinycolor(`hsv(${hue},${sat}%,${bri}%)`);
 
-      return prop*propRatio;
-    }
-  },
-  getters: {
-    getLocalColorXY: (state) => (id) => {
-      const hue = state.convertColorRange(state.localColor[id].hue, 359, 360);
-      const sat = state.localColor[id].saturation;
-      const lum = state.localColor[id].luminosity;
-      // Control the lights
-      const color = tinycolor("hsl("+hue+", "+sat+"%, "+lum+"%)");
-      const rgbColor = color.toRgb();
-      const xyColor = converter.calculateXY(rgbColor.r, rgbColor.g, rgbColor.b);
-      console.log("rgb:", rgbColor);
+			const hsl = color.toHsl()
 
-      return xyColor;
-    },
-  },
-  mutations: {
-    updateLights(state, payload) {
-      state.lights = payload
-    },
-    updateLocalColor(state, payload) {
-      state.localColor = payload
-    },
-    setHSL(state) {
-      const lights = state.lights;
-      let radialHslArr = [];
-      class radialHsl {
-        constructor(hue, sat, lum, alpha) {
-          this.hue = hue;
-          this.saturation = sat;
-          this.luminosity = lum;
-          this.alpha = alpha;
-        }
-      }
+			const radialHsl = {
+				hue: state.convertColorRange(hsl.h, 360, 359),
+				saturation: hsl.s*100,
+				luminosity: hsl.l*100
+			}
 
-      Object.keys(lights).forEach(id => {
-        const hue = state.convertColorRange(lights[id].state.hue, 65535, 359);
-        const sat = state.convertColorRange(lights[id].state.sat, 254, 100);
-        const bri = state.convertColorRange(lights[id].state.bri, 254, 100);
+			return radialHsl;
+		},
+		getHSB: (state) => (hsl) => {
+			const hue = hsl.hue
+			const sat = hsl.saturation
+			const lum = hsl.luminosity
+			
+			const color = tinycolor(`hsl(${hue},${sat}%,${lum}%)`);
 
-        
-        const color = tinycolor(`hsv(${hue},${sat}%,${bri}%)`);
-        const hsl = color.toHsl();
+			const hsv = color.toHsv();
 
-        radialHslArr[id] = new radialHsl(Math.round(hsl.h), Math.round(hsl.s)*100, Math.round(hsl.l*100), hsl.a)
-      });
+			const hsb = {
+				hue: state.convertColorRange(hsv.h, 360, 65535),
+				sat: state.convertColorRange(hsv.s*100, 100, 254),
+				bri: state.convertColorRange(hsv.v*100, 100, 254)
+			}
 
-      state.localColor = [...radialHslArr];
-    },
-  },
-  actions: {
+			return hsb;
+		},
+	},
+	mutations: {
+		SET_LOCAL_LIGHTS(state, payload) {
+			state.lights = payload;
+		},
+		SET_LOCAL_COLORS(state, payload) {
+			state.localColors = payload;
+		},
+	},
+	actions: {
+		async updateLocalLights({ commit, dispatch }) {
+			try {
+				const response = await axios.get(`http://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/lights`)
+				console.log("response.data: ", response.data)
+				await dispatch('updateLocalColors', response.data)	
+				commit('SET_LOCAL_LIGHTS', response.data)
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async updateLocalColors(context, payload) {
+			const lights = payload;
+			var colors = {};
+			
+			Object.keys(lights).forEach(id => {
+				const hsl = context.getters.getHSL(lights[id]);
+				const ct = lights[id].state.ct;
+				
+				colors[id] = {
+					hue: hsl.hue,
+					saturation: hsl.saturation,
+					luminosity: hsl.luminosity,
+					ct: ct,
+				}
+			});
+			context.commit('SET_LOCAL_COLORS', colors)
+		},
+		async controlLight(context, payload) {
+			const hsb = payload.hsl ? context.getters.getHSB(payload.hsl) : undefined;
 
-  },
-  modules: {
-  }
+			const id = payload.id;
+			const on = payload.on;
+			const hue = hsb ? Math.round(hsb.hue) : undefined;
+			const sat = hsb ? Math.round(hsb.sat) : undefined;
+			const bri = hsb ? Math.round(hsb.bri) : undefined;
+			const ct = payload.ct || undefined;
+			const bri_inc = payload.bri_inc || undefined;
+
+			try {
+				await axios.put(
+					`http://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/lights/${id}/state`,
+					{
+						on,
+                        ...(hue && { hue }),
+                        ...(sat && { sat }),
+						...(bri && { bri }),
+						...(ct && { ct }),
+						...(bri_inc && { bri_inc }),
+					}
+				).then(function(response) {
+					console.log(response);
+				})
+				await context.dispatch('updateLocalLights');
+
+				if (payload.colorTempHSL) { // If the control is for color temperature, convert temp to HSL for local change until next update
+					const colorTempHSL = payload.colorTempHSL;
+					var temp = context.state.localColors;
+					temp[id].hue = colorTempHSL.hue;
+					temp[id].saturation = colorTempHSL.saturation;
+					temp[id].luminosity = colorTempHSL.luminosity;
+
+					context.commit('SET_LOCAL_COLORS', temp)
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	},
+	modules: {
+	}
 })

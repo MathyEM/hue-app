@@ -1,6 +1,6 @@
 <template>
     <div class="hue-switch-container">
-        <button class="switch btn btn-on" @click="controlLight(id, true)">
+        <button class="switch btn btn-on" @click="controlLight(true)">
             <div class="icon-wrap">I</div>
         </button>
         <button class="switch btn btn-brighten" @mousedown="startBrightenInterval()" @touchstart="startBrightenInterval()" @mouseup="stopBrightenInterval()" @mouseleave="stopBrightenInterval()" @touchend="stopBrightenInterval()">
@@ -9,14 +9,14 @@
         <button class="switch btn btn-dim" @mousedown="startDimmingInterval()" @touchstart="startDimmingInterval()" @mouseup="stopDimmingInterval()" @mouseleave="stopDimmingInterval()" @touchend="stopDimmingInterval()">
             <div class="icon"></div>
         </button>
-        <button class="switch btn btn-off" @click="controlLight(id, false)">
+        <button class="switch btn btn-off" @click="controlLight(false)">
             <div class="icon-wrap">O</div>
         </button>
     </div>
 </template>
 
 <script>
-// import store from '../store'
+import store from '../store'
 // import axios from 'axios'
 
 export default {
@@ -26,18 +26,18 @@ export default {
             type: String,
             required: true
         },
-        state: {
-            type: Object,
-            required: true
-        },
-        controlLight: {
-            type: Function,
-            required: true
-        },
+    },
+    computed: {
+		light() {
+			return store.state.lights[this.id];
+		},
+        state() {
+			return store.state.lights[this.id].state;
+		},
     },
     data() {
         return {
-            dimmingStep: 10,
+            dimmingStep: 20,
             dimmingSpeed: 200,
             minBri: 1,
             maxBri: 254,
@@ -46,32 +46,36 @@ export default {
         }
     },
     methods: {
+        controlLight: function(on, bri_inc) {
+            const payload = {
+                id: this.id,
+                on: on,
+                bri_inc: bri_inc,
+            }
+            return store.dispatch('controlLight', payload)
+        },
         startDimmingInterval: function() {
-            let props = this.$props;
-            let data = this.$data;
-
-            props.controlLight(props.id, true, (props.state.bri >= data.minBri+data.dimmingStep ? props.state.bri-data.dimmingStep : data.minBri)); // Run function immediately instead of waiting for initial delay of setInterval
-
-            data.startDimming = setInterval(function() {
-                props.controlLight(props.id, true, (props.state.bri >= data.minBri+data.dimmingStep ? props.state.bri-data.dimmingStep : data.minBri));
-            }, this.$data.dimmingSpeed)
+            this.controlLight(true, this.dimmingStep*-1);
+            var self = this;
+            
+            this.startDimming = setInterval(function() {
+                self.controlLight(true, self.dimmingStep*-1);
+            }, this.dimmingSpeed)
         },
         stopDimmingInterval: function() {
-            clearInterval(this.$data.startDimming);
+            clearInterval(this.startDimming);
         },
 
         startBrightenInterval: function () {
-            let props = this.$props;
-            let data = this.$data;
+            this.controlLight(true, this.dimmingStep);
+             var self = this;
 
-            props.controlLight(props.id, true, (props.state.bri <= data.maxBri-data.dimmingStep ? props.state.bri+data.dimmingStep : data.maxBri)); // Run function immediately instead of waiting for initial delay of setInterval
-
-            data.startBrighten = setInterval(function() {
-                props.controlLight(props.id, true, (props.state.bri <= data.maxBri-data.dimmingStep ? props.state.bri+data.dimmingStep : data.maxBri));
-            }, this.$data.dimmingSpeed)
+            this.startBrighten = setInterval(function() {
+               self.controlLight(true, self.dimmingStep);
+            }, this.dimmingSpeed)
         },
         stopBrightenInterval: function() {
-            clearInterval(this.$data.startBrighten);
+            clearInterval(this.startBrighten);
         },
     }
 }
@@ -83,6 +87,7 @@ export default {
     $off-white: whitesmoke;
     $border-radius: 2px;
     $switch-size: 6rem;
+    position: relative; // This makes the buttons clickable even when the color wheel is overlapping
 
     display: grid;
     grid-template-rows: 2fr 1fr 1fr 2fr;
@@ -127,9 +132,10 @@ export default {
         }
 
         &.btn-brighten div, &.btn-dim div {
+            $sun: "../../public/img/icons/sun.svg";
             background-color: $gray;
-            -webkit-mask: url("../assets/icons/sun.svg") no-repeat center;
-            mask: url("../assets/icons/sun.svg") no-repeat center;
+            -webkit-mask: url($sun) no-repeat center;
+            mask: url($sun) no-repeat center;
             width: 100%;
         }
 
