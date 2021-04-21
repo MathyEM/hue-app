@@ -1,17 +1,15 @@
 <template>
-    <div>
+    <div class="entity-wrapper">
         <h3 class="lamp-title">{{ id }}: {{ light.name }}</h3>
         <p class="lamp-info">On: {{ state.on }}</p>
         <div v-if="color.hue" class="color-picker-wrapper">
-            <ColorPicker class="color-picker" v-bind="color" @change="onHueInput" :initially-collapsed="true"></ColorPicker>
+            <ColorPicker class="color-picker" :class="{ 'off': !state.on }" v-bind="color" @change="onHueInput" :initially-collapsed="true"></ColorPicker>
             <input type="range" class="range hsl luminosity" name="luminosity" id="luminosity" min="0" max="100" :value="color.luminosity" @change="onLumInput">
             <input type="range" class="range hsl saturation" name="saturation" id="saturation" min="0" max="100" :value="color.saturation" @change="onSatInput">
             <input type="range" class="color-temperature" name="color-temperature" id="color-temperature" min="153" max="500" :value="color.ct" @change="onCTInput">
         </div>
         <div v-else class="color-picker-wrapper">
             <ColorPicker class="color-picker" v-bind="color" @change="onHueInput" :initially-collapsed="true" :disabled="true"></ColorPicker>
-        </div>
-        <div class="color-picker-wrapper">
         </div>
         <HueDimmerSwitch :id="id" />
     </div>
@@ -40,6 +38,7 @@ export default {
     },
     data() {
         return {
+
         }
     },
     computed: {
@@ -138,6 +137,12 @@ export default {
 $transition-speed: 400ms;
 $color-picker-size: 150px;
 
+.entity-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
 .color-picker-wrapper {
     position: relative;
     width: fit-content;
@@ -170,7 +175,13 @@ $color-picker-size: 150px;
             -webkit-animation: rcp-ripple 0.35s cubic-bezier(0.35, 0, 0.25, 1) forwards;
             animation: rcp-ripple 0.35s cubic-bezier(0.35, 0, 0.25, 1) forwards;
         }
+
+        
     }
+    .color-picker.off .rcp__well {
+        background-color: #bfbfbf !important;
+    }
+
     .color-picker[aria-expanded=true] {
         width: $color-picker-size;
         height: $color-picker-size;
@@ -182,6 +193,7 @@ $color-picker-size: 150px;
 
     .color-temperature {
         position: relative; // This makes the slider clickable even when the color wheel is overlapping
+        padding: 1rem 0;
     }
 
     $sat-left: 72%;
@@ -191,7 +203,7 @@ $color-picker-size: 150px;
         pointer-events: none;
         z-index: 1;
         position: absolute;
-        top: 40%;
+        top: 35%;
         width: 0;
         opacity: 0;
         transform: translateX(-50%) rotateZ(-90deg);

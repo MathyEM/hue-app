@@ -7,7 +7,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		lights: {},
+		lights: {
+	
+		},
 		localColors: {
 			// hue: 0-359,
 			// saturation: 0-100,

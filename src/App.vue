@@ -1,8 +1,10 @@
 <template>
 	<div id="app">
 		<img alt="Vue logo" src="./assets/logo.png">
-		<div v-for="light, index in lights" :key="index">
-			<HueEntity :id="index" />
+		<div class="container">
+			<div class="entity-container" v-for="light, index in lights" :key="index">
+				<HueEntity :id="index" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -55,5 +57,15 @@ export default {
 	text-align: center;
 	color: #2c3e50;
 	margin-top: 60px;
+
+	.container {
+		display: flex;
+		justify-content: center;
+
+		.entity-container {
+			padding: 0 2rem;
+			display: flex;
+		}
+	}
 }
 </style>
