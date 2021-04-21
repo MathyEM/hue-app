@@ -1,4 +1,4 @@
-# hue-app
+# hue-app-v2
 
 ## Project setup
 ```
