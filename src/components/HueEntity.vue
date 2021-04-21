@@ -108,11 +108,7 @@ export default {
                 b: rgb.blue,
             });
 
-            console.log(colorTemp, rgb);
-
             const colorTempHSL = color.toHsl();
-
-            console.log(colorTempHSL);
 
             const payload = {
                 id: this.id,

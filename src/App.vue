@@ -36,9 +36,15 @@ export default {
 		]),
 	},
 	async mounted() {
-		this.updateLocalLights();
+		
+	},
+	created() {
+		this.updateLocalLights(this.$data.pollingInterval);
 
 		this.$data.updateHueStateInterval = setInterval(this.updateLocalLights, this.$data.pollingInterval)
+	},
+	destroy() {
+		clearInterval(this.updateHueStateInterval)
 	}
 }
 </script>
