@@ -67,6 +67,7 @@ export default {
 	.container {
 		display: flex;
 		justify-content: center;
+		flex-wrap: wrap;
 
 		.entity-container {
 			padding: 0 2rem;
