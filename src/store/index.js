@@ -56,6 +56,28 @@ export default new Vuex.Store({
 
 			return hsb;
 		},
+		getRGB: () => (hsl) => {
+			const hue = hsl.hue
+			const sat = hsl.saturation
+			const lum = hsl.luminosity
+
+			const color = tinycolor(`hsl(${hue},${sat}%,${lum}%)`);
+
+			const rgb = color.toRgb();
+
+			return rgb;
+		},
+		getHEX: () => (hsl) => {
+			const hue = hsl.hue
+			const sat = hsl.saturation
+			const lum = hsl.luminosity
+
+			const color = tinycolor(`hsl(${hue},${sat}%,${lum}%)`);
+
+			const hex = color.toHex();
+
+			return hex;
+		},
 	},
 	mutations: {
 		SET_LOCAL_LIGHTS(state, payload) {
@@ -66,12 +88,14 @@ export default new Vuex.Store({
 		},
 	},
 	actions: {
-		async updateLocalLights({ commit, dispatch }) {
+		async updateLocalLights({ state, getters, commit, dispatch }) {
 			try {
 				const response = await axios.get(`http://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/lights`)
 				commit('SET_LOCAL_LIGHTS', response.data)
 				dispatch('updateLocalColors', response.data)	
 				console.log("response.data: ", response.data[5].state)
+				console.log("hex:", "#"+getters.getHEX(state.localColors[5]));
+				console.log("rgb:", getters.getRGB(state.localColors[5]));
 			} catch (error) {
 				console.log(error);
 			}
