@@ -88,14 +88,12 @@ export default new Vuex.Store({
 		},
 	},
 	actions: {
-		async updateLocalLights({ state, getters, commit, dispatch }) {
+		async updateLocalLights({ commit, dispatch }) {
 			try {
 				const response = await axios.get(`http://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/lights`)
 				commit('SET_LOCAL_LIGHTS', response.data)
 				dispatch('updateLocalColors', response.data)	
-				console.log("response.data: ", response.data[5].state)
-				console.log("hex:", "#"+getters.getHEX(state.localColors[5]));
-				console.log("rgb:", getters.getRGB(state.localColors[5]));
+				console.log("updateLocalLights: ", response.data[5].state)
 			} catch (error) {
 				console.log(error);
 			}
@@ -140,20 +138,9 @@ export default new Vuex.Store({
 						...(bri_inc && { bri_inc }),
 					}
 				).then(function(response) {
-					console.log(response);
-					context.dispatch('updateLocalLights');
+					console.log("controlLight",response);
 				})
-				
-				if (payload.colorTempHSL) { // If the control is for color temperature, convert temp to HSL for local change until next update
-					const colorTempHSL = payload.colorTempHSL;
-					var temp = context.state.localColors;
-					temp[id].hue = colorTempHSL.hue;
-					temp[id].saturation = colorTempHSL.saturation;
-					temp[id].luminosity = colorTempHSL.luminosity;
-					temp[id].ct = ct;
-					
-					context.commit('SET_LOCAL_COLORS', temp)
-				}
+				await context.dispatch('updateLocalLights');
 				
 			} catch (error) {
 				console.log(error);
