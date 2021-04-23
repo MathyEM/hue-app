@@ -3,8 +3,8 @@
         <h3 class="lamp-title">{{ id }}: {{ light.name }}</h3>
         <p class="lamp-info">On: {{ state.on }}</p>
         <div v-if="color.hue" class="color-picker-wrapper">
-            <CombinedColorPicker :id="id" :color="color" :onClass="{ 'off': !state.on }" />
-            <ColorTemperature :id="id" :colorTemperature="color.ct" />
+            <CombinedColorPicker :id="id" :onClass="{ 'off': !state.on }" />
+            <ColorTemperature :id="id" />
         </div>
         <div v-else class="color-picker-wrapper">
             <ColorPicker class="color-picker" v-bind="color" :initially-collapsed="true" :disabled="true"></ColorPicker>

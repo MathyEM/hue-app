@@ -1,5 +1,5 @@
 <template>
-	<input type="range" class="color-temperature" name="color-temperature" id="color-temperature" min="153" max="500" :value="colorTemperature" @change="onCTInput">
+	<input type="range" class="color-temperature" name="color-temperature" id="color-temperature" min="153" max="500" :value="color.ct" @change="onCTInput">
 </template>
 
 <script>
@@ -17,6 +17,11 @@ export default {
         return {
             temperatureGradient: Object,
         }
+    },
+	computed: {
+        color() {
+            return store.state.localColors[this.id];
+        },
     },
 	methods: {
 		async onCTInput(e) {

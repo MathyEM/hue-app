@@ -18,9 +18,13 @@ export default {
 	},
 	props: {
 		id: String,
-		color: Object,
 		onClass: Object,
 	},
+	computed: {
+        color() {
+            return store.state.localColors[this.id];
+        },
+    },
 	methods: {
 		onHueInput(hue) {
             const hsl = {
