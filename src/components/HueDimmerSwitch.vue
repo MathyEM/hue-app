@@ -92,7 +92,6 @@ export default {
     display: grid;
     grid-template-rows: 2fr 1fr 1fr 2fr;
     margin: auto;
-    margin-bottom: 50px;
     width: $switch-size;
     height: 2.5 * $switch-size;
     border: 1px lightgray solid;

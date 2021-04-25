@@ -2,8 +2,13 @@
 	<div id="app">
 		<img alt="Vue logo" src="./assets/logo.png">
 		<div class="container">
-			<div class="entity-container" v-for="light, index in lights" :key="index">
-				<HueEntity :id="index" />
+			<div v-for="(group, g_index) in groups" :key="g_index" class="group-container">
+				<h1 class="group-title">{{ group.name }}</h1>
+				<div class="group-wrapper">
+					<div class="entity-container" v-for="light, l_index in group.lights" :key="l_index">
+						<HueEntity :id="light" />
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -26,6 +31,21 @@ export default {
 		};
 	},
 	computed: {
+		groups() {
+			const groups = store.state.groups;
+
+			var filteredGroups = [];
+
+			console.log("groups:", groups);
+			for (const key of Object.keys(groups)) {
+				console.log("group", groups[key]);
+				if (groups[key].class !== "TV") {
+					filteredGroups.push(groups[key]);
+				}
+			}
+			
+			return filteredGroups;
+		},
 		lights() {
 			return store.state.lights;
 		},
@@ -33,12 +53,13 @@ export default {
 	methods: {
 		...mapActions([
 			'updateLocalLights',
+			'updateLocalGroups',
 		]),
 	},
 	async mounted() {
-		
+		this.updateLocalGroups();		
 	},
-	created() {
+	async created() {
 		this.updateLocalLights(this.$data.pollingInterval);
 
 		this.$data.updateHueStateInterval = setInterval(this.updateLocalLights, this.$data.pollingInterval)
@@ -68,10 +89,32 @@ export default {
 		display: flex;
 		justify-content: center;
 		flex-wrap: wrap;
+		flex-direction: column;
+		padding: 0 3rem;
+
+		.group-container {
+			align-self: flex-start;
+			margin-bottom: 3rem;
+
+			h1 {
+				margin-bottom: 2rem;
+				text-align: left;
+			}
+
+			.group-wrapper {
+				display: flex;
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+		}
 
 		.entity-container {
-			padding: 0 2rem;
+			margin: 0 1.5rem;
 			display: flex;
+
+			&:first-child {
+				margin-left: 0;
+			}
 		}
 	}
 }

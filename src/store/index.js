@@ -7,6 +7,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
+		groups: {
+
+		},
 		lights: {
 	
 		},
@@ -80,6 +83,9 @@ export default new Vuex.Store({
 		},
 	},
 	mutations: {
+		SET_LOCAL_GROUPS(state, payload) {
+			state.groups = payload;
+		},
 		SET_LOCAL_LIGHTS(state, payload) {
 			state.lights = payload;
 		},
@@ -88,6 +94,15 @@ export default new Vuex.Store({
 		},
 	},
 	actions: {
+		async updateLocalGroups({ commit }) {
+			try {
+				const response = await axios.get(`http://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/groups`)
+				commit('SET_LOCAL_GROUPS', response.data)
+				console.log("updateLocalGroups: ", response.data)
+			} catch (error) {
+				console.log(error);
+			}
+		},
 		async updateLocalLights({ commit, dispatch }) {
 			try {
 				const response = await axios.get(`http://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/lights`)

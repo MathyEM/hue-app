@@ -65,10 +65,17 @@ export default {
 <style lang="scss">
 @import '~@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css';
 
+$border-radius: 4px;
+
 .entity-wrapper {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
+    width: 15.5rem;
+    padding: 1rem;
+
+    border: 1px lightgray solid;
+    border-radius: $border-radius;
 }
 
 .color-picker-wrapper {
