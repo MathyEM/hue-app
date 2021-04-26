@@ -17,12 +17,17 @@ export default {
 		ColorPicker,
 	},
 	props: {
+		group: Boolean,
 		id: String,
 		onClass: Object,
 	},
 	computed: {
         color() {
-            return store.state.localColors[this.id];
+			if (!this.group) { // if not a group
+				return store.state.localColors[this.id];
+			} else {
+				return store.state.localGroupColors[this.id];
+			}
         },
     },
 	methods: {
@@ -37,7 +42,12 @@ export default {
                 on: true,
                 hsl: hsl,
             }
-            store.dispatch('controlLight', payload)
+
+			if (!this.group) {
+				store.dispatch('controlLight', payload)
+			} else {
+				store.dispatch('controlGroup', payload)
+			}
         },
         onLumInput(e) {
             const luminosity = e.target.value;
@@ -52,7 +62,12 @@ export default {
                 on: true,
                 hsl: hsl,
             }
-            store.dispatch('controlLight', payload)
+
+            if (!this.group) {
+				store.dispatch('controlLight', payload)
+			} else {
+				store.dispatch('controlGroup', payload)
+			}
         },
         onSatInput(e) {
             const saturation = e.target.value;
@@ -67,7 +82,12 @@ export default {
                 on: true,
                 hsl: hsl,
             }
-            store.dispatch('controlLight', payload)
+            
+			if (!this.group) {
+				store.dispatch('controlLight', payload)
+			} else {
+				store.dispatch('controlGroup', payload)
+			}
         },
 	}
 }

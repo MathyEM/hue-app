@@ -2,8 +2,17 @@
 	<div id="app">
 		<img alt="Vue logo" src="./assets/logo.png">
 		<div class="container">
-			<div v-for="(group, g_index) in groups" :key="g_index" class="group-container">
+			<div v-for="group, g_index in groups" :key="g_index" class="group-container">
 				<h1 class="group-title">{{ group.name }}</h1>
+				<div class="group-controls">
+					<div v-if="group.action.hue" class="color-picker-wrapper">
+						<CombinedColorPicker :group="true" :id="g_index.toString()" :onClass="{ 'off': !group.action.on }" />
+						<ColorTemperature :group="true" :id="g_index.toString()" />
+					</div>
+					<div v-else class="color-picker-wrapper">
+						<!-- <ColorPicker class="color-picker" v-bind="groupColors[g_index]" :initially-collapsed="true" :disabled="true"></ColorPicker> -->
+					</div>
+				</div>
 				<div class="group-wrapper">
 					<div class="entity-container" v-for="light, l_index in group.lights" :key="l_index">
 						<HueEntity :id="light" />
@@ -17,12 +26,18 @@
 <script>
 import store from './store'
 import HueEntity from './components/HueEntity.vue'
+// import ColorPicker from '@radial-color-picker/vue-color-picker';
+import CombinedColorPicker from './components/CombinedColorPicker.vue'
+import ColorTemperature from './components/ColorTemperature.vue';
 import { mapActions } from 'vuex';
 
 export default {
 	name: 'App',
 	components: {
-		HueEntity
+		// ColorPicker,
+        ColorTemperature,
+        CombinedColorPicker,
+		HueEntity,
 	},
 	data() {
 		return {
@@ -33,14 +48,11 @@ export default {
 	computed: {
 		groups() {
 			const groups = store.state.groups;
+			var filteredGroups = {};
 
-			var filteredGroups = [];
-
-			console.log("groups:", groups);
 			for (const key of Object.keys(groups)) {
-				console.log("group", groups[key]);
 				if (groups[key].class !== "TV") {
-					filteredGroups.push(groups[key]);
+					filteredGroups[key] = groups[key];
 				}
 			}
 			
@@ -49,6 +61,9 @@ export default {
 		lights() {
 			return store.state.lights;
 		},
+		groupColors() {
+			return store.state.localGroupColors;
+		}
 	},
 	methods: {
 		...mapActions([
@@ -57,12 +72,19 @@ export default {
 		]),
 	},
 	async mounted() {
-		this.updateLocalGroups();		
+
 	},
 	async created() {
-		this.updateLocalLights(this.$data.pollingInterval);
+		var self = this;
+		self;
 
-		this.$data.updateHueStateInterval = setInterval(this.updateLocalLights, this.$data.pollingInterval)
+		this.updateLocalLights();
+		this.updateLocalGroups();	
+
+		this.$data.updateHueStateInterval = setInterval(() => {
+			self.updateLocalLights();
+			self.updateLocalGroups();
+		}, this.$data.pollingInterval)
 	},
 	destroy() {
 		clearInterval(this.updateHueStateInterval)

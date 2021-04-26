@@ -24,9 +24,9 @@ export default {
     name: 'HueEntity',
     components: {
         ColorPicker,
-        HueDimmerSwitch,
         ColorTemperature,
         CombinedColorPicker,
+        HueDimmerSwitch,
     },
     props: {
         id: {
