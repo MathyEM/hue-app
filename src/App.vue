@@ -71,6 +71,8 @@ export default {
 </script>
 
 <style lang="scss">
+$margin: 1.5rem;
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -97,7 +99,7 @@ export default {
 			margin-bottom: 3rem;
 
 			h1 {
-				margin-bottom: 2rem;
+				margin-bottom: 0.5rem;
 				text-align: left;
 			}
 
@@ -105,6 +107,7 @@ export default {
 				display: flex;
 				justify-content: center;
 				flex-wrap: wrap;
+				margin-left: -#{$margin};
 			}
 		}
 
@@ -112,9 +115,6 @@ export default {
 			margin: 0 1.5rem;
 			display: flex;
 
-			&:first-child {
-				margin-left: 0;
-			}
 		}
 	}
 }
