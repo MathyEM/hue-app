@@ -81,21 +81,26 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .hue-switch-container {
     $gray: dimgray;
     $off-white: whitesmoke;
+    $plane-depth: 3px;
+    $plane-highlight: 1px;
     $border-radius: 2px;
     $switch-size: 6rem;
-    position: relative; // This makes the buttons clickable even when the color wheel is overlapping
 
+    position: relative; // This makes the buttons clickable even when the color wheel is overlapping
     display: grid;
     grid-template-rows: 2fr 1fr 1fr 2fr;
     margin: auto;
     width: $switch-size;
     height: 2.5 * $switch-size;
-    border: 1px lightgray solid;
     border-radius: $border-radius;
+    border-top: 1px lightgray solid;
+    border-right: 1px lightgray solid;
+
+    box-shadow: -1px 0px 4px -1px hsla(0,0%,0%,.25);
 
     .switch.btn {
         font-weight: bolder;
@@ -107,23 +112,46 @@ export default {
         border: none;
         color: $gray;
         background-color: $off-white;
+        border-bottom: 1px lightgray solid;
+
+        box-shadow: inset -#{$plane-highlight} 0 1px hsla(0,0%,100%,.5), /* highlight on the right and at the top */
+            inset #{$plane-depth} 0 0 hsla(0,0%,0%,0.25); /* inner shadow that adds thickness */
 
         &:active {
             background-color: darken($off-white, 6%);
-            box-shadow: inset -0.5px 0.5px 0.5px 0.2px transparentize(gray, 0.3);
+            box-shadow: inset #{$plane-depth/2} 0 0 hsla(0,0%,0%,0.25), /* inner shadow that adds thickness */
+            inset -#{$plane-depth/3} #{$plane-depth/2} 0.5px 0 hsla(0,0%,0%,0.25); /* inner shadow that adds depth */
         }
 
         &:focus {
             outline: none;
         }
 
-        &:last-child {
-            border-bottom-left-radius: $border-radius;
-            border-bottom-right-radius: $border-radius;
-        }
         &:first-child {
             border-top-left-radius: $border-radius;
             border-top-right-radius: $border-radius;
+
+            box-shadow: inset -#{$plane-highlight} #{$plane-highlight} 1px hsla(0,0%,100%,.5), /* highlight on the right and at the top */
+            inset #{$plane-depth} 0 0 hsla(0,0%,0%,0.25); /* inner shadow that adds thickness */
+
+            &:active {
+                background-color: darken($off-white, 6%);
+                box-shadow: inset #{$plane-depth/2} 0 0 hsla(0,0%,0%,0.25),
+                inset -#{$plane-depth/3} #{$plane-depth/2} 0.5px 0 hsla(0,0%,0%,0.25); /* inner shadow that adds depth */; /* inner shadow that adds thickness */
+            }
+        }
+        &:last-child {
+            border-bottom-left-radius: $border-radius;
+            border-bottom-right-radius: $border-radius;
+
+            box-shadow: inset -#{$plane-highlight} 0 1px hsla(0,0%,100%,.5), /* highlight on the right and at the top */
+            inset #{$plane-depth} -#{$plane-depth} 0 hsla(0,0%,0%,0.25); /* inner shadow that adds thickness */
+
+            &:active {
+                background-color: darken($off-white, 6%);
+                box-shadow: inset #{$plane-depth/2} -#{$plane-depth/2} 0 hsla(0,0%,0%,0.25),
+                inset -#{$plane-depth/3} #{$plane-depth/2} 0.5px 0 hsla(0,0%,0%,0.25); /* inner shadow that adds depth */; /* inner shadow that adds thickness */
+            }
         }
 
         &:not(:last-child) {

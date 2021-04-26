@@ -66,16 +66,27 @@ export default {
 @import '~@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css';
 
 $border-radius: 4px;
+$padding: 1rem;
+$plane-depth: 4px;
 
 .entity-wrapper {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     width: 15.5rem;
-    padding: 1rem;
+    padding: $padding;
 
-    border: 1px lightgray solid;
+    padding-left: calc(#{$padding} + #{$plane-depth});
+    padding-bottom: calc(#{$padding} + #{$plane-depth});
+
     border-radius: $border-radius;
+    background-color: lighten(lightgrey, 15%);
+    
+    box-shadow: inset 0 0 0 1px hsla(0,0%,0%,.2), /* allround shadow/border */
+                // inset 0 4px 1px hsla(0,0%,100%,.5), /* highlight at the top */
+                inset -4px 4px 1px hsla(0,0%,100%,.5), /* highlight on the right and at the top */
+                inset #{$plane-depth} -#{$plane-depth} 0 hsla(0,0%,0%,.25), /* inner shadow that adds thickness */
+                -1px 2px 3px hsla(0,0%,0%,.25);
 }
 
 .color-picker-wrapper {
