@@ -12,6 +12,7 @@
 					<div v-else class="color-picker-wrapper">
 						<!-- <ColorPicker class="color-picker" v-bind="groupColors[g_index]" :initially-collapsed="true" :disabled="true"></ColorPicker> -->
 					</div>
+					<OnOffSwitch :id="g_index.toString()" />
 				</div>
 				<div class="group-wrapper">
 					<div class="entity-container" v-for="light, l_index in group.lights" :key="l_index">
@@ -29,6 +30,7 @@ import HueEntity from './components/HueEntity.vue'
 // import ColorPicker from '@radial-color-picker/vue-color-picker';
 import CombinedColorPicker from './components/CombinedColorPicker.vue'
 import ColorTemperature from './components/ColorTemperature.vue';
+import OnOffSwitch from './components/OnOffSwitch.vue';
 import { mapActions } from 'vuex';
 
 export default {
@@ -38,6 +40,7 @@ export default {
         ColorTemperature,
         CombinedColorPicker,
 		HueEntity,
+		OnOffSwitch,
 	},
 	data() {
 		return {
