@@ -120,7 +120,8 @@ export default new Vuex.Store({
 			const radialHsl = {
 				hue: state.convertColorRange(hsl.h, 360, 359),
 				saturation: hsl.s*100,
-				luminosity: hsl.l*100
+				luminosity: hsl.l*100,
+				ct: colorTemp,
 			}
 
 			// console.log("radialHSL:", radialHsl);
@@ -157,11 +158,17 @@ export default new Vuex.Store({
 			const groups = payload;
 			console.log("updateLocalGroupColors:", payload);
 			var colors = {};
+
+			var hsl;
 			
 			Object.keys(groups).forEach(id => {
-				const hsl = context.getters.getHSL(groups[id].action);
 				const ct = groups[id].action.ct;
-				
+				if (groups[id].action.colormode !== "ct") {
+					hsl = context.getters.getHSL(groups[id].action)
+				} else {
+					hsl = context.getters.colorTempToHSL(ct)
+				}
+
 				colors[id] = {
 					hue: hsl.hue,
 					saturation: hsl.saturation,
@@ -169,7 +176,8 @@ export default new Vuex.Store({
 					ct: ct,
 				}
 			});
-			context.commit('SET_LOCAL_GROUP_COLORS', colors)
+			context.commit('SET_LOCAL_GROUP_COLORS', colors);
+			await context.dispatch('updateLocalLights');
 		},
 		async controlGroup(context, payload) {
 			const hsb = payload.hsl ? context.getters.getHSB(payload.hsl) : undefined;
@@ -216,11 +224,17 @@ export default new Vuex.Store({
 			const lights = payload;
 			console.log("updateLocalColors:", payload);
 			var colors = {};
+
+			var hsl;
 			
 			Object.keys(lights).forEach(id => {
-				const hsl = context.getters.getHSL(lights[id].state);
 				const ct = lights[id].state.ct;
-				
+				if (lights[id].state.colormode !== "ct") {
+					hsl = context.getters.getHSL(lights[id].state);
+				} else {
+					hsl = context.getters.colorTempToHSL(ct)
+				}
+
 				colors[id] = {
 					hue: hsl.hue,
 					saturation: hsl.saturation,

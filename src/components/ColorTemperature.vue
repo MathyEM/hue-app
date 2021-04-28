@@ -30,38 +30,16 @@ export default {
 		async onCTInput(e) {
             const colorTemp = parseInt(e.target.value);
 
-			const hsl = store.getters.colorTempToHSL(colorTemp);
-
             const payload = {
                 id: this.id,
                 on: true,
                 ct: colorTemp,
             }
 
-			var temp;
-
 			if (!this.group) { // if light
 				await store.dispatch('controlLight', payload)
-	
-				// change localColors
-				temp = store.state.localColors;
-	
-				temp[this.id].hue = hsl.hue;
-				temp[this.id].saturation = hsl.saturation;
-				temp[this.id].luminosity = hsl.luminosity;
-	
-				store.commit('SET_LOCAL_COLORS', temp);
 			} else { // if group
 				await store.dispatch('controlGroup', payload)
-	
-				// change localColors
-				temp = store.state.localGroupColors;
-	
-				temp[this.id].hue = hsl.hue;
-				temp[this.id].saturation = hsl.saturation;
-				temp[this.id].luminosity = hsl.luminosity;
-	
-				store.commit('SET_LOCAL_GROUP_COLORS', temp);
 			}
         }
 	},
