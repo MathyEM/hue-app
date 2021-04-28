@@ -3,16 +3,20 @@
 		<img alt="Vue logo" src="./assets/logo.png">
 		<div class="container">
 			<div v-for="group, g_index in groups" :key="g_index" class="group-container">
-				<h1 class="group-title">{{ group.name }}</h1>
-				<div class="group-controls">
-					<div v-if="group.action.hue" class="color-picker-wrapper">
-						<CombinedColorPicker :group="true" :id="g_index.toString()" :onClass="{ 'off': !group.action.on }" />
-						<ColorTemperature :group="true" :id="g_index.toString()" />
+				<div class="group-header">
+					<h1 class="group-title">{{ group.name }}</h1>
+					<div class="group-controls">
+						<OnOffSwitch :id="g_index.toString()" />
+						<div v-if="group.action.hue" class="color-picker-container">
+							<div class="color-picker-wrapper">
+								<CombinedColorPicker :group="true" :id="g_index.toString()" :onClass="{ 'off': !group.action.on }" />
+							</div>
+							<ColorTemperature :group="true" :id="g_index.toString()" />
+						</div>
+						<div v-else class="color-picker-wrapper">
+							<!-- <ColorPicker class="color-picker" v-bind="groupColors[g_index]" :initially-collapsed="true" :disabled="true"></ColorPicker> -->
+						</div>
 					</div>
-					<div v-else class="color-picker-wrapper">
-						<!-- <ColorPicker class="color-picker" v-bind="groupColors[g_index]" :initially-collapsed="true" :disabled="true"></ColorPicker> -->
-					</div>
-					<OnOffSwitch :id="g_index.toString()" />
 				</div>
 				<div class="group-wrapper">
 					<div class="entity-container" v-for="light, l_index in group.lights" :key="l_index">
@@ -123,9 +127,48 @@ $margin: 1.5rem;
 			align-self: flex-start;
 			margin-bottom: 3rem;
 
-			h1 {
-				margin-bottom: 0.5rem;
-				text-align: left;
+			.group-header {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				margin-bottom: 1rem;
+
+				h1 {
+					display: inline-flex;
+					flex-wrap: wrap;
+					text-align: left;
+					margin-right: 2rem;
+				}
+	
+				.group-controls {
+					display: inline-flex;
+					align-items: center;
+					flex-wrap: wrap;
+					margin: auto;
+
+					.switch-container {
+						margin: auto;
+					}
+	
+					.color-picker-container {
+						display: flex;
+						margin: 0;
+						flex-wrap: wrap;
+	
+						.color-picker-wrapper {
+							margin: auto;
+							padding: 0 2rem;
+							.hsl {
+								top: 45%;
+							}
+						}
+
+						.color-temperature {
+							margin: auto;
+							
+						}
+					}
+				}
 			}
 
 			.group-wrapper {

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="switch-container">
 		<label class="switch">
 			<input type="checkbox" :checked="action.on" @change="controlGroup(!action.on)">
 			<span class="slider round"></span>
@@ -39,16 +39,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$size: 34px;
+$size: 1.8rem;
 $ball-size: $size*0.764706;
 $gap: ($size - $ball-size) / 2;
 
 .switch {
   position: relative;
   display: inline-block;
+  z-index: 1; // set to 1 and the button won't be blocked by the overlapping color picker
   margin: 0.5rem;
   width: $size*1.76470588;
   height: $size;
+  grid-area: on-toggle;
 }
 
 .switch input { 
