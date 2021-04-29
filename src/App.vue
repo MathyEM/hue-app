@@ -121,7 +121,7 @@ $margin: 1.5rem;
 		justify-content: center;
 		flex-wrap: wrap;
 		flex-direction: column;
-		padding: 0 3rem;
+		padding: 0 2rem;
 
 		.group-container {
 			align-self: flex-start;
@@ -139,43 +139,51 @@ $margin: 1.5rem;
 					text-align: left;
 					margin-right: 2rem;
 				}
-	
-				.group-controls {
-					display: inline-flex;
-					align-items: center;
-					flex-wrap: wrap;
+			}
+
+			.group-controls {
+				display: inline-flex;
+				align-items: center;
+				flex-wrap: wrap;
+				margin: 0 1rem;
+
+				.switch-container {
 					margin: auto;
+				}
 
-					.switch-container {
-						margin: auto;
+				.color-picker-container {
+					display: flex;
+					margin: 0;
+					flex-wrap: wrap;
+					justify-content: center;
+
+					.color-picker-wrapper {
+						margin: 0 2rem;
+						
+						.hsl {
+							top: 45%;
+						}
 					}
-	
-					.color-picker-container {
-						display: flex;
-						margin: 0;
-						flex-wrap: wrap;
-	
-						.color-picker-wrapper {
-							margin: auto;
-							padding: 0 2rem;
-							.hsl {
-								top: 45%;
-							}
-						}
 
-						.color-temperature {
-							margin: auto;
-							
-						}
+					.color-temperature {
+						margin: 0 2rem;
+						
 					}
 				}
 			}
 
 			.group-wrapper {
 				display: flex;
-				justify-content: center;
 				flex-wrap: wrap;
 				margin-left: -#{$margin};
+			}
+			@media screen and (max-width: 649px) {
+				.group-wrapper {
+					justify-content: center;
+				}
+				.group-controls {
+					margin: auto;
+				}
 			}
 		}
 
