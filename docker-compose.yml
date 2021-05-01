@@ -1,0 +1,9 @@
+---
+    version: "2"
+    services:
+      hue-app:
+        image: kallakukku/hue-app:latest
+        container_name: hue-app
+        restart: unless-stopped
+        ports:
+          - 8899:80
