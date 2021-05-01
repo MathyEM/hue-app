@@ -1,6 +1,6 @@
 <template>
     <div class="entity-wrapper">
-        <h3 class="lamp-title">{{ id }}: {{ light.name }}</h3>
+        <h3 class="lamp-title">{{ light.name }}</h3>
         <div v-if="state.hue" class="color-picker-wrapper">
             <CombinedColorPicker :id="id" :onClass="{ 'off': !state.on }" />
             <ColorTemperature :id="id" />
