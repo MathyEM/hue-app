@@ -8,7 +8,7 @@
         <div v-else class="color-picker-wrapper">
             <ColorPicker class="color-picker white-disabled" :class="{ 'white-on': state.on, 'off': !state.on }" :initially-collapsed="true" />
         </div>
-        <HueDimmerSwitch :id="id" />
+        <HueDimmerSwitch :id="id" @click="whiteColor" />
     </div>
 </template>
 
