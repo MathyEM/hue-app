@@ -24,9 +24,9 @@ export default {
     name: 'HueEntity',
     components: {
         ColorPicker,
-        HueDimmerSwitch,
         ColorTemperature,
         CombinedColorPicker,
+        HueDimmerSwitch,
     },
     props: {
         id: {
@@ -75,6 +75,7 @@ $plane-depth: 4px;
     flex-wrap: nowrap;
     width: 15.5rem;
     padding: $padding;
+    margin-bottom: 2rem;
 
     padding-left: calc(#{$padding} + #{$plane-depth});
     padding-bottom: calc(#{$padding} + #{$plane-depth});
