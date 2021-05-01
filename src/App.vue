@@ -95,6 +95,7 @@ export default {
 		.group-container {
 			align-self: flex-start;
 			margin-bottom: 3rem;
+			width: 100%;
 
 			h1 {
 				margin-bottom: 2rem;
