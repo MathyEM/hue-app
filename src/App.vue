@@ -85,11 +85,11 @@ export default {
 		var self = this;
 		self;
 
-		this.updateLocalLights();
-
 		this.$data.updateHueStateInterval = setInterval(() => {
 			self.updateLocalLights();
 		}, this.$data.pollingInterval)
+
+		this.updateLocalLights();
 	},
 	destroy() {
 		clearInterval(this.updateHueStateInterval)

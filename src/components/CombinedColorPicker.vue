@@ -136,10 +136,6 @@ $color-picker-size: 150px;
 	background-color: #bfbfbf !important; // !important necessary here, since the original background-color is inline style
 }
 
-.color-picker.white-disabled {
-	pointer-events: none;
-}
-
 .color-picker[aria-expanded=true] {
 	width: $color-picker-size;
 	height: $color-picker-size;

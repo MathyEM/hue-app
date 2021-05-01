@@ -1,7 +1,7 @@
 <template>
 	<div class="switch-container">
 		<label class="switch">
-			<input type="checkbox" :checked="state.any_on" @change="controlGroup(!action.on)">
+			<input type="checkbox" :checked="state.any_on" @change="controlGroup(!state.any_on)">
 			<span class="slider round"></span>
 		</label>
 	</div>

@@ -6,9 +6,9 @@
             <ColorTemperature :id="id" />
         </div>
         <div v-else class="color-picker-wrapper">
-            <ColorPicker class="color-picker white-disabled" :class="{ 'white-on': state.on, 'off': !state.on }" :initially-collapsed="true" />
+            <ColorPicker v-bind="whiteColor" class="color-picker white-disabled" :class="{ 'white-on': state.on, 'off': !state.on }" :initially-collapsed="true" />
         </div>
-        <HueDimmerSwitch :id="id" @click="whiteColor" />
+        <HueDimmerSwitch :id="id" />
     </div>
 </template>
 
@@ -52,23 +52,22 @@ export default {
         whiteColor() {
             let color = tinycolor('rgb(255, 223, 116)');
             const brightness = store.state.convertColorRange(this.state.bri, 254, 73);  //the tinycolor darken() method goes from 0-100
-            color = color.darken(73-brightness).toString();                                     //but at 73, the color goes black.
-            let elem = document.querySelector('.color-picker.white-on .rcp__well');
-            if (elem) {
-                elem.style.backgroundColor = color;
+            color = color.darken(73-brightness);                                     //but at 73, the color goes black.
+            const hsl = color.toHsl();
+            return {
+                hue: hsl.h,
+                saturation: hsl.s*100,
+                luminosity: hsl.l*100,
             }
-            return color;
-        }
+        },
     },
     methods: {
-        
         
     },
     created() {
 
     },
     mounted() {
-        this.whiteColor
     },
 }
 </script>
@@ -105,5 +104,9 @@ $plane-depth: 4px;
     position: relative;
     width: fit-content;
     margin: auto;
+
+    .color-picker.white-disabled {
+        pointer-events: none;
+    }
 }
 </style>
