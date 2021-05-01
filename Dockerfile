@@ -1,4 +1,5 @@
 #STEP 1 BUILD VUE PROJECT
+# docker buildx build --platform linux/arm/v7 -t kallakukku/hue-app:latest --push .
 FROM node:14-alpine AS build
 WORKDIR /app
 COPY package.json ./
