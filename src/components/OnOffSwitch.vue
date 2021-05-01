@@ -1,7 +1,7 @@
 <template>
 	<div class="switch-container">
 		<label class="switch">
-			<input type="checkbox" :checked="action.on" @change="controlGroup(!action.on)">
+			<input type="checkbox" :checked="state.any_on" @change="controlGroup(!action.on)">
 			<span class="slider round"></span>
 		</label>
 	</div>
@@ -24,6 +24,9 @@ export default {
 		},
 		action() {
 			return store.state.groups[this.id].action;
+		},
+		state() {
+			return store.state.groups[this.id].state;
 		}
 	},
 	methods: {

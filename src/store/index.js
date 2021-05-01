@@ -144,12 +144,15 @@ export default new Vuex.Store({
 		},
 	},
 	actions: {
-		async updateLocalGroups({ commit, dispatch }) {
+		async updateLocalGroups({ commit, dispatch }, payload) {
 			try {
 				const response = await axios.get(`http://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/groups`)
 				commit('SET_LOCAL_GROUPS', response.data)
 				console.log("updateLocalGroups: ", response.data)
-				dispatch('updateLocalGroupColors', response.data)
+				await dispatch('updateLocalGroupColors', response.data)
+				if (!payload?.lightUpdate) {
+					await dispatch('updateLocalLights')
+				}
 			} catch (error) {
 				console.log(error);
 			}
@@ -177,7 +180,6 @@ export default new Vuex.Store({
 				}
 			});
 			context.commit('SET_LOCAL_GROUP_COLORS', colors);
-			await context.dispatch('updateLocalLights');
 		},
 		async controlGroup(context, payload) {
 			const hsb = payload.hsl ? context.getters.getHSB(payload.hsl) : undefined;
@@ -215,7 +217,8 @@ export default new Vuex.Store({
 				const response = await axios.get(`http://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/lights`)
 				commit('SET_LOCAL_LIGHTS', response.data)
 				console.log("updateLocalLights: ", response.data[5].state)
-				dispatch('updateLocalColors', response.data)	
+				await dispatch('updateLocalColors', response.data)
+				await dispatch('updateLocalGroups', { lightUpdate: true })
 			} catch (error) {
 				console.log(error);
 			}
