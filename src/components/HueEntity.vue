@@ -1,13 +1,12 @@
 <template>
     <div class="entity-wrapper">
         <h3 class="lamp-title">{{ id }}: {{ light.name }}</h3>
-        <p class="lamp-info">On: {{ state.on }}</p>
-        <div v-if="color.hue" class="color-picker-wrapper">
+        <div v-if="state.hue" class="color-picker-wrapper">
             <CombinedColorPicker :id="id" :onClass="{ 'off': !state.on }" />
             <ColorTemperature :id="id" />
         </div>
         <div v-else class="color-picker-wrapper">
-            <ColorPicker class="color-picker" v-bind="color" :initially-collapsed="true" :disabled="true"></ColorPicker>
+            <ColorPicker class="color-picker white-disabled" :class="{ 'white-on': state.on, 'off': !state.on }" :initially-collapsed="true" />
         </div>
         <HueDimmerSwitch :id="id" />
     </div>
@@ -19,6 +18,7 @@ import ColorPicker from '@radial-color-picker/vue-color-picker';
 import CombinedColorPicker from './CombinedColorPicker.vue'
 import ColorTemperature from './ColorTemperature.vue';
 import HueDimmerSwitch from './HueDimmerSwitch'
+import tinycolor from 'tinycolor2'
 
 export default {
     name: 'HueEntity',
@@ -49,15 +49,24 @@ export default {
         color() {
             return store.state.localColors[this.id];
         },
+        whiteColor() {
+            let color = tinycolor('rgb(255, 223, 116)');
+            const brightness = store.state.convertColorRange(this.state.bri, 254, 73);  //the tinycolor darken() method goes from 0-100
+            color = color.darken(73-brightness).toString();                                     //but at 73, the color goes black.
+            let elem = document.querySelector('.color-picker.white-on .rcp__well');
+            elem.style.backgroundColor = color;
+            return color;
+        }
     },
     methods: {
         
         
     },
     created() {
+
     },
     mounted() {
-
+        this.whiteColor
     },
 }
 </script>

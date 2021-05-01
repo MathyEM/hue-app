@@ -126,10 +126,18 @@ $color-picker-size: 150px;
 		animation: rcp-ripple 0.35s cubic-bezier(0.35, 0, 0.25, 1) forwards;
 	}
 
+	&.rcp.disabled {
+		cursor: initial;
+	}
+
 	
 }
 .color-picker.off .rcp__well {
 	background-color: #bfbfbf !important; // !important necessary here, since the original background-color is inline style
+}
+
+.color-picker.white-disabled {
+	pointer-events: none;
 }
 
 .color-picker[aria-expanded=true] {
