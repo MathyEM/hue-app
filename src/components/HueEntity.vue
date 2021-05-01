@@ -54,7 +54,9 @@ export default {
             const brightness = store.state.convertColorRange(this.state.bri, 254, 73);  //the tinycolor darken() method goes from 0-100
             color = color.darken(73-brightness).toString();                                     //but at 73, the color goes black.
             let elem = document.querySelector('.color-picker.white-on .rcp__well');
-            elem.style.backgroundColor = color;
+            if (elem) {
+                elem.style.backgroundColor = color;
+            }
             return color;
         }
     },
