@@ -9,7 +9,7 @@
 						<OnOffSwitch :id="g_index.toString()" />
 						<div v-if="group.action.hue" class="color-picker-container">
 							<div class="color-picker-wrapper">
-								<CombinedColorPicker :group="true" :id="g_index.toString()" :onClass="{ 'off': !group.action.on }" />
+								<CombinedColorPicker :group="true" :id="g_index.toString()" :onClass="{ 'off': !group.state.any_on }" />
 							</div>
 							<ColorTemperature :group="true" :id="g_index.toString()" />
 						</div>
@@ -85,13 +85,11 @@ export default {
 		var self = this;
 		self;
 
-		this.updateLocalLights();
-		this.updateLocalGroups();	
-
 		this.$data.updateHueStateInterval = setInterval(() => {
 			self.updateLocalLights();
-			self.updateLocalGroups();
 		}, this.$data.pollingInterval)
+
+		this.updateLocalLights();
 	},
 	destroy() {
 		clearInterval(this.updateHueStateInterval)
