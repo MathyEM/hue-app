@@ -57,7 +57,6 @@ $thumb-margin-top: ( $thumb-height * -0.5 ) + ( $track-height * 0.5 );
 
 * {
 	--thumb-color: whitesmoke;
-	--test: #{$thumb-margin-top};
 }
 
 .color-temperature {

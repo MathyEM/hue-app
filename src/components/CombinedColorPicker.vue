@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<ColorPicker class="color-picker" :class="onClass" v-bind="color" @change="onHueInput" :initially-collapsed="true"></ColorPicker>
-		<input type="range" class="range hsl luminosity" name="luminosity" id="luminosity" min="0" max="100" :value="color.luminosity" @change="onLumInput">
-		<input type="range" class="range hsl saturation" name="saturation" id="saturation" min="0" max="100" :value="color.saturation" @change="onSatInput">
+		<input type="range" class="range hsl luminosity" name="luminosity" id="luminosity" min="0" max="100" :value="color.luminosity" @change="onLumInput" :style="lumGradient">
+		<input type="range" class="range hsl saturation" name="saturation" id="saturation" min="0" max="100" :value="color.saturation" @change="onSatInput" :style="satGradient">
 	</div>
 </template>
 
@@ -21,6 +21,11 @@ export default {
 		id: String,
 		onClass: Object,
 	},
+	data() {
+		return {
+			// lumGradient: Object,
+		}
+	},
 	computed: {
         color() {
 			if (!this.group) { // if not a group
@@ -29,6 +34,21 @@ export default {
 				return store.state.localGroupColors[this.id];
 			}
         },
+		lumGradient() {
+			const gradient = {
+				'--lum-gradient1': `hsl(${this.color.hue}, ${this.color.saturation}%, 0%)`,
+				'--lum-gradient2': `hsl(${this.color.hue}, ${this.color.saturation}%, 50%)`,
+				'--lum-gradient3': `hsl(${this.color.hue}, ${this.color.saturation}%, 100%)`,
+			}
+			return gradient;
+		},
+		satGradient() {
+			const gradient = {
+				'--sat-gradient1': `hsl(${this.color.hue}, 0%, ${this.color.luminosity}%)`,
+				'--sat-gradient2': `hsl(${this.color.hue}, 100%, ${this.color.luminosity}%)`,
+			}
+			return gradient;
+		},
     },
 	methods: {
 		onHueInput(hue) {
@@ -89,6 +109,9 @@ export default {
 				store.dispatch('controlGroup', payload)
 			}
         },
+		created: {
+			
+		}
 	}
 }
 </script>
@@ -97,6 +120,16 @@ export default {
 @import '~@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css';
 $transition-speed: 400ms;
 $color-picker-size: 150px;
+
+* {
+	--lum-gradient1: #000000;
+	--lum-gradient2: #666666;
+	--lum-gradient3: #ffffff;
+
+	--sat-gradient1: #000000;
+	--sat-gradient2: #ffffff;
+
+}
 
 .color-picker {
 	width: $color-picker-size;
@@ -158,12 +191,54 @@ $lum-left: 28%;
 	transform: translateX(-50%) rotateZ(-90deg);
 	transition: $transition-speed*0.7 opacity, $transition-speed*1.2 width, $transition-speed left;
 
-	&.luminosity {
-		left: $lum-left + 20%;
-	}
+	&.luminosity, &.saturation {
+		$thumb-width: 12px;
+		$thumb-height: 14px;
+		$track-height: 8px;
+		$thumb-margin-top: ( $thumb-height * -0.55 ) + ( $track-height * 0.45 );
 
-	&.saturation {
-		left: $sat-left - 20%;
+		-webkit-appearance: none;
+		background: transparent;
+
+		
+		&:focus {
+			outline: none;
+		}
+
+		&::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			border: 1px solid lightgray;
+			width: $thumb-width;
+			height: $thumb-height;
+			border-radius: 3px;
+			background: var(--thumb-color);
+			cursor: pointer;
+			justify-self: center;
+			margin-top: $thumb-margin-top; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+		}
+		&::-webkit-slider-runnable-track {
+			cursor: pointer;
+			height: $track-height;
+			border: 1px solid lightgray;
+			border-radius: 2px;
+			// background: linear-gradient(90deg, #b1c1ff, #d4e0ff, #fff8cf, #f8fcff, #ffeb9b, #ffdd6f, #ffcf4d, #ffc031, #ffb11d);
+		}
+
+		&.luminosity {
+			left: $lum-left + 20%;
+
+			&::-webkit-slider-runnable-track {
+				background: linear-gradient(90deg, var(--lum-gradient1), var(--lum-gradient2), var(--lum-gradient3));
+			}
+		}
+
+		&.saturation {
+			left: $sat-left - 20%;
+
+			&::-webkit-slider-runnable-track {
+				background: linear-gradient(90deg, var(--sat-gradient1), var(--sat-gradient2));
+			}
+		}
 	}
 }
 .color-picker[aria-expanded=true]~.luminosity {
