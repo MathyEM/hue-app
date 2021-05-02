@@ -51,8 +51,8 @@ export default {
         },
         whiteColor() {
             let color = tinycolor('rgb(255, 223, 116)');
-            const brightness = store.state.convertColorRange(this.state.bri, 254, 73);  //the tinycolor darken() method goes from 0-100
-            color = color.darken(73-brightness);                                     //but at 73, the color goes black.
+            const brightness = store.state.convertColorRange(this.state.bri, 254, 50);  //the tinycolor darken() method goes from 0-100
+            color = color.darken(50-brightness);                                     //but at 73, the color goes black.
             const hsl = color.toHsl();
             return {
                 hue: hsl.h,

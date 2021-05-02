@@ -170,6 +170,15 @@ export default new Vuex.Store({
 					hsl = context.getters.getHSL(groups[id].action)
 				} else {
 					hsl = context.getters.colorTempToHSL(ct)
+					//adjust color to match the brightness of the light
+					let color = tinycolor(`hsl(${hsl.hue}, ${hsl.saturation}%, ${hsl.luminosity}%)`);
+					const brightness = context.state.convertColorRange(groups[id].action.bri, 254, 50);
+					color = color.darken(50-brightness).toHsl();
+					hsl = {
+						hue: color.h,
+						saturation: color.s*100,
+						luminosity: color.l*100,
+					}
 				}
 
 				colors[id] = {
@@ -235,7 +244,15 @@ export default new Vuex.Store({
 				if (lights[id].state.colormode !== "ct") {
 					hsl = context.getters.getHSL(lights[id].state);
 				} else {
-					hsl = context.getters.colorTempToHSL(ct)
+					hsl = context.getters.colorTempToHSL(ct);
+					let color = tinycolor(`hsl(${hsl.hue}, ${hsl.saturation}%, ${hsl.luminosity}%)`);
+					const brightness = context.state.convertColorRange(lights[id].state.bri, 254, 50);
+					color = color.darken(50-brightness).toHsl();
+					hsl = {
+						hue: color.h,
+						saturation: color.s*100,
+						luminosity: color.l*100,
+					}
 				}
 
 				colors[id] = {
