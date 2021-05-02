@@ -83,7 +83,7 @@ $plane-depth: 4px;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    width: 15.5rem;
+    width: 16.5rem;
     padding: $padding;
     margin-bottom: 2rem;
 
@@ -98,6 +98,10 @@ $plane-depth: 4px;
                 inset -4px 4px 1px hsla(0,0%,100%,.5), /* highlight on the right and at the top */
                 inset #{$plane-depth} -#{$plane-depth} 0 hsla(0,0%,0%,.25), /* inner shadow that adds thickness */
                 -1px 2px 3px hsla(0,0%,0%,.25);
+    
+    .lamp-title {
+        margin-bottom: 1rem;
+    }
 }
 
 .color-picker-wrapper {

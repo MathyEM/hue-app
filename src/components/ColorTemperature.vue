@@ -61,7 +61,7 @@ $thumb-margin-top: ( $thumb-height * -0.5 ) + ( $track-height * 0.5 );
 
 .color-temperature {
 	position: relative; // This makes the slider clickable even when the color wheel is overlapping
-	padding: 1rem 0;
+	padding: 1.1rem 0;
 	-webkit-appearance: none;
 	background: transparent;
 
