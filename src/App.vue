@@ -181,6 +181,7 @@ $margin: 1.5rem;
 			@media screen and (max-width: 649px) {
 				.group-wrapper {
 					justify-content: center;
+					margin: initial;
 				}
 				.group-controls {
 					margin: auto;
