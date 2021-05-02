@@ -42,9 +42,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$size: 1.8rem;
-$ball-size: $size*0.764706;
-$gap: ($size - $ball-size) / 2;
+$size: 29px;
+$slider-size: $size*0.764706;
+$gap: ($size - $slider-size) / 2;
+
+$background-color: lightgray;
+$on-color: rgb(253, 218, 100);
+$slider-color: whitesmoke;
 
 .switch {
   position: relative;
@@ -53,7 +57,6 @@ $gap: ($size - $ball-size) / 2;
   margin: 0.5rem;
   width: $size*1.76470588;
   height: $size;
-  grid-area: on-toggle;
 }
 
 .switch input { 
@@ -69,7 +72,7 @@ $gap: ($size - $ball-size) / 2;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: $background-color;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -77,33 +80,33 @@ $gap: ($size - $ball-size) / 2;
 .slider:before {
 	position: absolute;
 	content: "";
-	height: $ball-size;
-	width: $ball-size;
+	height: $slider-size;
+	width: $slider-size;
 	left: $gap;
 	bottom: $gap;
-	background-color: white;
+	background-color: $slider-color;
 	-webkit-transition: .4s;
 	transition: .4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: $on-color;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px $background-color;
 }
 
 input:checked + .slider:before {
-  transform: translateX($ball-size);
+  transform: translateX($slider-size);
 }
 
 /* Rounded sliders */
-.slider.round {
-  border-radius: $size;
-}
+// .slider.round {
+//   border-radius: $size;
+// }
 
-.slider.round:before {
-  border-radius: 50%;
-}
+// .slider.round:before {
+//   border-radius: 50%;
+// }
 </style>
