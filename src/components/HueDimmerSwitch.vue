@@ -4,10 +4,10 @@
             <div class="icon-wrap">I</div>
         </button>
         <button class="switch btn btn-brighten" @mousedown="startBrightenInterval()" @touchstart="startBrightenInterval()" @mouseup="stopBrightenInterval()" @mouseleave="stopBrightenInterval()" @touchend="stopBrightenInterval()">
-            <div class="icon"></div>
+            <div class="sun-icon"></div>
         </button>
         <button class="switch btn btn-dim" @mousedown="startDimmingInterval()" @touchstart="startDimmingInterval()" @mouseup="stopDimmingInterval()" @mouseleave="stopDimmingInterval()" @touchend="stopDimmingInterval()">
-            <div class="icon"></div>
+            <div class="sun-icon"></div>
         </button>
         <button class="switch btn btn-off" @click="controlLight(false)">
             <div class="icon-wrap">O</div>
@@ -82,14 +82,10 @@ export default {
 </script>
 
 <style lang="scss">
-.hue-switch-container {
-    $gray: dimgray;
-    $off-white: whitesmoke;
-    $plane-depth: 3px;
-    $plane-highlight: 1px;
-    $border-radius: 2px;
-    $switch-size: 6rem;
+@import '../assets/scss/_colors.scss';
+@import '../assets/scss/_btn-vars.scss';
 
+.hue-switch-container {
     position: relative; // This makes the buttons clickable even when the color wheel is overlapping
     display: grid;
     grid-template-rows: 2fr 1fr 1fr 2fr;
@@ -97,8 +93,8 @@ export default {
     width: $switch-size;
     height: 2.5 * $switch-size;
     border-radius: $border-radius;
-    border-top: 1px lightgray solid;
-    border-right: 1px lightgray solid;
+    border-top: 1px $lightgray solid;
+    border-right: 1px $lightgray solid;
 
     box-shadow: -1px 0px 4px -1px hsla(0,0%,0%,.25);
 
@@ -112,7 +108,7 @@ export default {
         border: none;
         color: $gray;
         background-color: $off-white;
-        border-bottom: 1px lightgray solid;
+        border-bottom: 1px $lightgray solid;
 
         box-shadow: inset -#{$plane-highlight} 0 1px hsla(0,0%,100%,.5), /* highlight on the right and at the top */
             inset #{$plane-depth} 0 0 hsla(0,0%,0%,0.25); /* inner shadow that adds thickness */
@@ -155,7 +151,7 @@ export default {
         }
 
         &:not(:last-child) {
-            border-bottom: 1px lightgray solid;
+            border-bottom: 1px $lightgray solid;
         }
 
         &.btn-brighten div, &.btn-dim div {
