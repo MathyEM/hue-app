@@ -109,7 +109,7 @@ export default {
 				store.dispatch('controlGroup', payload)
 			}
         },
-		created: {
+		created() {
 			
 		}
 	}
