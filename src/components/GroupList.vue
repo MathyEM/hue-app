@@ -13,9 +13,6 @@
                     </div>
                     <ColorTemperature :group="true" :id="id" />
                 </div>
-                <div v-else class="color-picker-wrapper">
-                    <!-- <ColorPicker class="color-picker" v-bind="groupColors[g_index]" :initially-collapsed="true" :disabled="true"></ColorPicker> -->
-                </div>
             </div>
         </div>
         <div class="group-wrapper" :class="'group-'+id">
@@ -29,7 +26,6 @@
 <script>
 import store from '../store'
 import HueEntity from './HueEntity.vue'
-// import ColorPicker from '@radial-color-picker/vue-color-picker';
 import CombinedColorPicker from './CombinedColorPicker.vue'
 import ColorTemperature from './ColorTemperature.vue';
 import OnOffSwitch from './OnOffSwitch.vue';
@@ -37,7 +33,6 @@ import OnOffSwitch from './OnOffSwitch.vue';
 export default {
     name: 'GroupList',
     components: {
-		// ColorPicker,
         ColorTemperature,
         CombinedColorPicker,
 		HueEntity,
