@@ -7,8 +7,8 @@
             <h1>Alle Rum/Grupper</h1>
         </div>
         <div class="group-wrapper">
-            <div class="entity-container">
-                <HueEntity v-for="group, g_index in groups" :key="g_index" :id="g_index" :isGroup="true" />
+            <div v-for="group, g_index in groups" :key="g_index" class="entity-container">
+                <HueEntity :id="g_index" :isGroup="true" />
             </div>
         </div>
     </div>
