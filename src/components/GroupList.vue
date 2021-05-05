@@ -35,7 +35,7 @@ import ColorTemperature from './ColorTemperature.vue';
 import OnOffSwitch from './OnOffSwitch.vue';
 
 export default {
-    name: 'GroupEntity',
+    name: 'GroupList',
     components: {
 		// ColorPicker,
         ColorTemperature,

@@ -3,7 +3,7 @@
 		<img alt="Vue logo" src="./assets/logo.png">
 		<div class="container">
 			<template v-for="group, g_index in groups">
-				<GroupEntity :key="g_index" :id="g_index" />
+				<GroupList :key="g_index" :id="g_index" />
 			</template>
 			<!--
 			<div v-for="group, g_index in groups" :key="g_index" class="group-container">
@@ -40,7 +40,7 @@ import store from './store'
 // import CombinedColorPicker from './components/CombinedColorPicker.vue'
 // import ColorTemperature from './components/ColorTemperature.vue';
 // import OnOffSwitch from './components/OnOffSwitch.vue';
-import GroupEntity from './components/GroupEntity';
+import GroupList from './components/GroupList';
 import { mapActions } from 'vuex';
 
 export default {
@@ -51,7 +51,7 @@ export default {
         // CombinedColorPicker,
 		// HueEntity,
 		// OnOffSwitch,
-		GroupEntity,
+		GroupList,
 	},
 	data() {
 		return {
