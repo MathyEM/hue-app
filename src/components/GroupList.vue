@@ -45,7 +45,7 @@ export default {
 	methods: {
 
 	},
-	async mounted() {
+	mounted() {
         this.$nextTick(function () {
             var group = document.querySelector('.group-wrapper');
             group.style.height = group.scrollHeight + "px";
@@ -62,7 +62,7 @@ export default {
             })
         })
 	},
-	async created() {
+	created() {
 
 	},
 	destroy() {
