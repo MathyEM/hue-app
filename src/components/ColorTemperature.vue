@@ -8,7 +8,7 @@ import store from '../store'
 export default {
 	name: 'ColorTemperature',
 	props: {
-		group: Boolean,
+		isGroup: Boolean,
 		id: String,
 		colorTemperature: Number,
 	},
@@ -19,7 +19,7 @@ export default {
     },
 	computed: {
         color() {
-            if (!this.group) { // if not a group
+            if (!this.isGroup) { // if not a group
 				return store.state.localColors[this.id];
 			} else {
 				return store.state.localGroupColors[this.id];
@@ -36,7 +36,7 @@ export default {
                 ct: colorTemp,
             }
 
-			if (!this.group) { // if light
+			if (!this.isGroup) { // if light
 				await store.dispatch('controlLight', payload)
 			} else { // if group
 				await store.dispatch('controlGroup', payload)

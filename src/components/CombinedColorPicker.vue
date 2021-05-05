@@ -17,7 +17,7 @@ export default {
 		ColorPicker,
 	},
 	props: {
-		group: Boolean,
+		isGroup: Boolean,
 		id: String,
 		onClass: Object,
 	},
@@ -28,7 +28,7 @@ export default {
 	},
 	computed: {
         color() {
-			if (!this.group) { // if not a group
+			if (!this.isGroup) { // if not a group
 				return store.state.localColors[this.id];
 			} else {
 				return store.state.localGroupColors[this.id];
@@ -63,7 +63,7 @@ export default {
                 hsl: hsl,
             }
 
-			if (!this.group) {
+			if (!this.isGroup) {
 				store.dispatch('controlLight', payload)
 			} else {
 				store.dispatch('controlGroup', payload)
@@ -83,7 +83,7 @@ export default {
                 hsl: hsl,
             }
 
-            if (!this.group) {
+            if (!this.isGroup) {
 				store.dispatch('controlLight', payload)
 			} else {
 				store.dispatch('controlGroup', payload)
@@ -103,7 +103,7 @@ export default {
                 hsl: hsl,
             }
             
-			if (!this.group) {
+			if (!this.isGroup) {
 				store.dispatch('controlLight', payload)
 			} else {
 				store.dispatch('controlGroup', payload)

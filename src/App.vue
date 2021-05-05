@@ -2,8 +2,9 @@
 	<div id="app">
 		<img alt="Vue logo" src="./assets/logo.png">
 		<div class="container">
+			<GroupList />
 			<template v-for="group, g_index in groups">
-				<GroupList :key="g_index" :id="g_index" />
+				<GroupEntities :key="g_index" :id="g_index" />
 			</template>
 		</div>
 	</div>
@@ -11,12 +12,14 @@
 
 <script>
 import store from './store'
+import GroupEntities from './components/GroupEntities';
 import GroupList from './components/GroupList';
 import { mapActions } from 'vuex';
 
 export default {
 	name: 'App',
 	components: {
+		GroupEntities,
 		GroupList,
 	},
 	data() {
@@ -41,7 +44,7 @@ export default {
 		lights() {
 			return store.state.lights;
 		},
-		groupColors() {
+		localGroupColors() {
 			return store.state.localGroupColors;
 		}
 	},

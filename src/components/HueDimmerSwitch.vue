@@ -26,6 +26,7 @@ export default {
             type: String,
             required: true
         },
+        isGroup: Boolean,
     },
     computed: {
 		light() {
@@ -52,7 +53,10 @@ export default {
                 on: on,
                 bri_inc: bri_inc,
             }
-            return store.dispatch('controlLight', payload)
+            if (!this.isGroup) {
+                return store.dispatch('controlLight', payload)
+            }
+            return store.dispatch('controlGroup', payload)
         },
         startDimmingInterval: function() {
             this.controlLight(true, this.dimmingStep*-1);
