@@ -2,7 +2,7 @@
     <div class="group-container">
         <div class="group-header">
 			<div>
-				<button class="layout-btn btn btn-group">
+				<button class="layout-btn btn btn-group visible">
 					<div class="layout-icon"></div>
 				</button>
 				<h1>Alle Rum/Grupper</h1>
@@ -49,13 +49,13 @@ export default {
 		var group;
 		this.$nextTick(() => {
 			group = document.querySelector('.group-wrapper');
-			let btn = document.querySelector('.btn-group');
+			var btn = document.querySelector('.btn-group');
 			btn.addEventListener('click', function () {
+				btn.classList.toggle("visible")
 				setContainerHeight(group);
 			})
 		})
         const unsubscribe = store.subscribe((mutation) => {
-			console.log(mutation.type);
 			if (mutation.type == "SET_LOCAL_GROUPS") {
 				this.$nextTick().then(() => {
 					group.style.height = group.scrollHeight + "px";
