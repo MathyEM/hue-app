@@ -47,18 +47,25 @@ export default {
 	},
 	mounted() {
 		var group;
-		this.$nextTick(() => {
+		this.$nextTick().then(() => {
 			group = document.querySelector('.group-wrapper');
 			var btn = document.querySelector('.btn-group');
+
 			btn.addEventListener('click', function () {
 				btn.classList.toggle("visible")
 				setContainerHeight(group);
 			})
+
+			group.addEventListener('transitionend', () => {
+				if (group.style.height !== "0px") {
+					group.style.height = "auto";
+				}
+			})			
 		})
         const unsubscribe = store.subscribe((mutation) => {
 			if (mutation.type == "SET_LOCAL_GROUPS") {
 				this.$nextTick().then(() => {
-					group.style.height = group.scrollHeight + "px";
+					group.style.height = group.scrollHeight + "px";					
 				})
 				unsubscribe();
 			}

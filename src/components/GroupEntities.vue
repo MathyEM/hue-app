@@ -63,6 +63,12 @@ export default {
                 btn.classList.toggle("visible")
                 setContainerHeight(group);
             })
+
+            group.addEventListener('transitionend', () => {
+				if (group.style.height !== "0px") {
+					group.style.height = "auto";
+				}
+			})
         })
     }
 }
@@ -101,26 +107,11 @@ $wrapper-transition-speed: 500ms;
             height: $btn-size;
             margin-right: 1rem;
 
-            // box-shadow: inset -#{$plane-highlight/2} #{$plane-highlight/2} 0 0.5px hsla(0,0%,100%,.5), /* highlight on the right and at the top */
-            //     inset #{$plane-depth/2} -#{$plane-depth/2} 0 0 hsla(0,0%,0%,0.25); /* inner shadow that adds thickness */
-
-            // &:active {
-            //     background-color: darken($off-white, 6%);
-            //     box-shadow: inset #{$plane-depth/3} 0 1px hsla(0,0%,0%,0.25), /* inner shadow that adds thickness */
-            //     inset -#{$plane-depth/4} #{$plane-depth/3} 0.5px 0 hsla(0,0%,0%,0.25); /* inner shadow that adds depth */
-            // }
-
             &:focus {
                 outline: none;
             }
 
             .layout-icon {
-                // $icon: "../../public/img/icons/vertical-grid-layout.svg";
-                // background-color: $gray;
-                // -webkit-mask: url($icon) no-repeat center center / cover;
-                // mask: url($icon) no-repeat center center / cover;
-                // -webkit-mask-size: 60% 60%;
-                // mask-size: 60% 60%;
                 width: 0;
                 height: 0;
                 border-top: 10px solid transparent;
