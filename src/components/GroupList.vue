@@ -1,10 +1,12 @@
 <template>
     <div class="group-container">
         <div class="group-header">
-			<button class="layout-btn btn btn-group">
-                <div class="layout-icon"></div>
-            </button>
-            <h1>Alle Rum/Grupper</h1>
+			<div>
+				<button class="layout-btn btn btn-group">
+					<div class="layout-icon"></div>
+				</button>
+				<h1>Alle Rum/Grupper</h1>
+			</div>
         </div>
         <div class="group-wrapper">
             <div v-for="group, g_index in groups" :key="g_index" class="entity-container">
@@ -43,26 +45,26 @@ export default {
 			return filteredGroups;
 		},
 	},
-	methods: {
-
-	},
 	mounted() {
-        this.$nextTick(() => {
-			var group = document.querySelector('.group-wrapper');
-            group.style.height = group.scrollHeight + "px";
-
-            let btn = document.querySelector('.btn-group');
-            btn.addEventListener('click', function () {
-                setContainerHeight(group);
-            })
-        })
+		var group;
+		this.$nextTick(() => {
+			group = document.querySelector('.group-wrapper');
+			let btn = document.querySelector('.btn-group');
+			btn.addEventListener('click', function () {
+				setContainerHeight(group);
+			})
+		})
+        const unsubscribe = store.subscribe((mutation) => {
+			console.log(mutation.type);
+			if (mutation.type == "SET_LOCAL_GROUPS") {
+				this.$nextTick().then(() => {
+					group.style.height = group.scrollHeight + "px";
+				})
+				unsubscribe();
+			}
+		})
+		
 	},
-	created() {
-
-	},
-	destroy() {
-
-	}
 }
 </script>
 

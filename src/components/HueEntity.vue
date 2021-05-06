@@ -1,16 +1,5 @@
 <template>
-    <div v-if="!isGroup" class="entity-wrapper">
-        <h3 class="lamp-title">{{ light.name }}</h3>
-        <div v-if="state.hue" class="color-picker-wrapper">
-            <CombinedColorPicker :id="id" :onClass="{ 'off': !state.on }" />
-            <ColorTemperature :id="id" />
-        </div>
-        <div v-else class="color-picker-wrapper">
-            <ColorPicker v-bind="whiteColor" class="color-picker white-disabled" :class="{ 'white-on': state.on, 'off': !state.on }" :initially-collapsed="true" />
-        </div>
-        <HueDimmerSwitch :id="id" />
-    </div>
-    <div v-else class="entity-wrapper">
+    <div v-if="isGroup" class="entity-wrapper">
         <h3 class="lamp-title">{{ group.name }}</h3>
         <div v-if="group.action.hue" class="color-picker-wrapper">
             <CombinedColorPicker :id="id" :onClass="{ 'off': !group.state.any_on }" :isGroup="isGroup" />
@@ -20,6 +9,17 @@
             <ColorPicker v-bind="whiteColor" class="color-picker white-disabled" :class="{ 'white-on': group.state.any_on, 'off': !group.state.any_on }" :initially-collapsed="true" />
         </div>
         <HueDimmerSwitch :id="id" :isGroup="isGroup" />
+    </div>
+    <div v-else class="entity-wrapper">
+        <h3 class="lamp-title">{{ light.name }}</h3>
+        <div v-if="state.hue" class="color-picker-wrapper">
+            <CombinedColorPicker :id="id" :onClass="{ 'off': !state.on }" />
+            <ColorTemperature :id="id" />
+        </div>
+        <div v-else class="color-picker-wrapper">
+            <ColorPicker v-bind="whiteColor" class="color-picker white-disabled" :class="{ 'white-on': state.on, 'off': !state.on }" :initially-collapsed="true" />
+        </div>
+        <HueDimmerSwitch :id="id" />
     </div>
 </template>
 

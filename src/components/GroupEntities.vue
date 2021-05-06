@@ -1,10 +1,12 @@
 <template>
     <div class="group-container">
         <div class="group-header">
-            <button class="layout-btn btn" :class="'btn-group-'+id">
-                <div class="layout-icon"></div>
-            </button>
-            <h1 class="group-title">{{ group.name }}</h1>
+            <div>
+                <button class="layout-btn btn" :class="'btn-group-'+id">
+                    <div class="layout-icon"></div>
+                </button>
+                <h1 class="group-title">{{ group.name }}</h1>
+            </div>
             <div class="group-controls">
                 <OnOffSwitch :id="id" />
                 <div v-if="group.action.hue" class="color-picker-container">
@@ -88,7 +90,7 @@ $wrapper-transition-speed: 500ms;
 
             font-weight: bolder;
             font-size: 1rem;
-            display: flex;
+            display: inline-flex;
             justify-content: center;
             align-items: center;
             border-radius: 0;
@@ -103,9 +105,9 @@ $wrapper-transition-speed: 500ms;
                 inset #{$plane-depth/2} -#{$plane-depth/2} 0 0 hsla(0,0%,0%,0.25); /* inner shadow that adds thickness */
 
             &:active {
-            background-color: darken($off-white, 6%);
-            box-shadow: inset #{$plane-depth/3} 0 1px hsla(0,0%,0%,0.25), /* inner shadow that adds thickness */
-            inset -#{$plane-depth/4} #{$plane-depth/3} 0.5px 0 hsla(0,0%,0%,0.25); /* inner shadow that adds depth */
+                background-color: darken($off-white, 6%);
+                box-shadow: inset #{$plane-depth/3} 0 1px hsla(0,0%,0%,0.25), /* inner shadow that adds thickness */
+                inset -#{$plane-depth/4} #{$plane-depth/3} 0.5px 0 hsla(0,0%,0%,0.25); /* inner shadow that adds depth */
             }
 
             &:focus {
@@ -123,7 +125,9 @@ $wrapper-transition-speed: 500ms;
                 height: 100%;
             }
         }
-
+        & > div {
+            margin-bottom: 1rem;
+        }
         h1 {
             display: inline-flex;
             flex-wrap: wrap;
@@ -167,7 +171,7 @@ $wrapper-transition-speed: 500ms;
         display: flex;
         flex-wrap: wrap;
         margin-left: -#{$margin};
-        height: 0;
+        height: auto;
         overflow: hidden;
         transition: height $wrapper-transition-speed ease-in-out;
     }
@@ -178,6 +182,14 @@ $wrapper-transition-speed: 500ms;
         }
         .group-controls {
             margin: auto;
+        }
+        .group-header {
+            & > div {
+                margin: auto;
+            }
+            div > * {
+                margin: auto;
+            }
         }
     }
 }
