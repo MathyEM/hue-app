@@ -29,6 +29,8 @@ import HueEntity from './HueEntity.vue'
 import CombinedColorPicker from './CombinedColorPicker.vue'
 import ColorTemperature from './ColorTemperature.vue';
 import OnOffSwitch from './OnOffSwitch.vue';
+import { setContainerHeight } from '../assets/js/functions.js';
+
 
 export default {
     name: 'GroupEntities',
@@ -47,7 +49,7 @@ export default {
     computed: {
         group() {
             return store.state.groups[this.id]
-        }
+        },
     },
     mounted() {
         this.$nextTick(function () {
@@ -56,13 +58,7 @@ export default {
 
             let btn = document.querySelector('.btn-group-'+this.id);
             btn.addEventListener('click', function () {
-                let height = group.style.height;
-
-                if (height !== "0px") {
-                    group.style.height = 0;
-                    return
-                }
-                group.style.height = group.scrollHeight + "px";
+                setContainerHeight(group);
             })
         })
     }

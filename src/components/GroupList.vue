@@ -17,6 +17,7 @@
 <script>
 import store from '../store'
 import HueEntity from './HueEntity.vue'
+import { setContainerHeight } from '../assets/js/functions.js';
 
 export default {
 	name: 'GroupList',
@@ -46,19 +47,13 @@ export default {
 
 	},
 	mounted() {
-        this.$nextTick(function () {
-            var group = document.querySelector('.group-wrapper');
+        this.$nextTick(() => {
+			var group = document.querySelector('.group-wrapper');
             group.style.height = group.scrollHeight + "px";
 
             let btn = document.querySelector('.btn-group');
             btn.addEventListener('click', function () {
-                let height = group.style.height;
-
-                if (height !== "0px") {
-                    group.style.height = 0;
-                    return
-                }
-                group.style.height = group.scrollHeight + "px";
+                setContainerHeight(group);
             })
         })
 	},
