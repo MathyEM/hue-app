@@ -76,6 +76,10 @@ export default {
 <style lang="scss">
 @import './assets/scss/_colors.scss';
 
+:root {
+	scroll-behavior: smooth;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;

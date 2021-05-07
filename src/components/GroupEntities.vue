@@ -1,11 +1,13 @@
 <template>
-    <div class="group-container">
+    <div class="group-container" :id="'group-' + id">
         <div class="group-header">
-            <div>
-                <button class="layout-btn btn visible" :class="'btn-group-'+id">
+            <div class="title-btn">
+                <button :id="'hide-group-' + id" class="layout-btn btn visible" :class="'btn-group-'+id">
                     <div class="layout-icon"></div>
                 </button>
-                <h1 class="group-title">{{ group.name }}</h1>
+                <label :for="'hide-group-' + id">
+                    <h2 class="group-title">{{ group.name }}</h2>
+                </label>
             </div>
             <div class="group-controls">
                 <OnOffSwitch :id="id" />
@@ -93,11 +95,11 @@ $wrapper-transition-speed: 500ms;
         margin-bottom: 1rem;
 
         .layout-btn {
-            $btn-size: 2rem;
+            $btn-size: 1.5rem;
 
             font-weight: bolder;
             font-size: 1rem;
-            display: inline-flex;
+            display: inline;
             justify-content: center;
             align-items: center;
             border-radius: 0;
@@ -105,7 +107,7 @@ $wrapper-transition-speed: 500ms;
             background-color: transparent;
             width: $btn-size;
             height: $btn-size;
-            margin-right: 1rem;
+            cursor: pointer;
 
             &:focus {
                 outline: none;
@@ -114,9 +116,9 @@ $wrapper-transition-speed: 500ms;
             .layout-icon {
                 width: 0;
                 height: 0;
-                border-top: 10px solid transparent;
-                border-bottom: 10px solid transparent;
-                border-left: 10px solid $gray;
+                border-top: $btn-size / 3 solid transparent;
+                border-bottom: $btn-size / 3 solid transparent;
+                border-left: $btn-size / 3 solid $gray;
                 transition: transform 450ms ease-in;
             }
 
@@ -126,14 +128,18 @@ $wrapper-transition-speed: 500ms;
                 }
             }
         }
-        & > div {
+        & > .title-btn {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
             margin-bottom: 1rem;
         }
-        h1 {
-            display: inline-flex;
+        h2 {
+            display: inline;
             flex-wrap: wrap;
             text-align: left;
             margin-right: 2rem;
+            cursor: pointer;
         }
     }
 
@@ -141,7 +147,6 @@ $wrapper-transition-speed: 500ms;
         display: inline-flex;
         align-items: center;
         flex-wrap: wrap;
-        margin: 0 1rem;
 
         .switch-container {
             margin: auto;
@@ -186,10 +191,12 @@ $wrapper-transition-speed: 500ms;
         }
         .group-header {
             & > div {
-                margin: auto;
+                margin-left: auto;
+                margin-right: auto;
             }
             div > * {
-                margin: auto;
+                margin-left: auto;
+                margin-right: auto;
             }
         }
     }

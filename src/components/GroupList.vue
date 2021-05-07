@@ -1,11 +1,13 @@
 <template>
     <div class="group-container">
         <div class="group-header">
-			<div>
-				<button class="layout-btn btn btn-group visible">
+			<div class="title-btn">
+				<button id="hide-groups" class="layout-btn btn btn-group visible">
 					<div class="layout-icon"></div>
 				</button>
-				<h1>Alle Rum/Grupper</h1>
+				<label for="hide-groups">
+					<h2>Alle Rum/Grupper</h2>
+				</label>
 			</div>
         </div>
         <div class="group-wrapper">

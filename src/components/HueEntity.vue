@@ -1,6 +1,8 @@
 <template>
     <div v-if="isGroup" class="entity-wrapper">
-        <h3 class="lamp-title">{{ group.name }}</h3>
+        <a :href="'#group-' + id">
+            <h3 class="lamp-title">{{ group.name }}</h3>
+        </a>
         <div v-if="group.action.hue" class="color-picker-wrapper">
             <CombinedColorPicker :id="id" :onClass="{ 'off': !group.state.any_on }" :isGroup="isGroup" />
             <ColorTemperature :id="id" :isGroup="isGroup" />
@@ -119,10 +121,17 @@ $plane-depth: 4px;
                 inset -4px 4px 1px hsla(0,0%,100%,.5), /* highlight on the right and at the top */
                 inset #{$plane-depth} -#{$plane-depth} 0 hsla(0,0%,0%,.25), /* inner shadow that adds thickness */
                 -1px 2px 3px hsla(0,0%,0%,.25);
-    
-    .lamp-title {
-        margin-bottom: 1rem;
+
+    .color-temperature {
+        padding-top: 1rem;
+        padding-bottom: 1.2rem;
     }
+
+    a {
+        color: inherit;
+        z-index: 1;
+    }
+
 }
 
 .color-picker-wrapper {
