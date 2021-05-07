@@ -204,6 +204,7 @@ export default new Vuex.Store({
 			const bri = hsb ? Math.round(hsb.bri) : undefined;
 			const ct = payload.ct || undefined;
 			const bri_inc = payload.bri_inc || undefined;
+			const transitiontime = payload.transitiontime || undefined;
 
 			try {
 				await axios.put(
@@ -215,6 +216,7 @@ export default new Vuex.Store({
 						...(bri && { bri }),
 						...(ct && { ct }),
 						...(bri_inc && { bri_inc }),
+						...(transitiontime && { transitiontime }),
 					}
 				).then(function(response) {
 					console.log("controlGroup",response);

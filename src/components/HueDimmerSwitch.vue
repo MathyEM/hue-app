@@ -38,10 +38,9 @@ export default {
     },
     data() {
         return {
-            dimmingStep: 20,
-            dimmingSpeed: 200,
-            minBri: 1,
-            maxBri: 254,
+            dimmingStep: 40,
+            dimmingSpeed: 600,
+            transitiontime: 5,
             startDimming: Function,
             startBrighten: Function,
         }
@@ -52,6 +51,7 @@ export default {
                 id: this.id,
                 on: on,
                 bri_inc: bri_inc,
+                transitiontime: this.transitiontime,
             }
             if (!this.isGroup) {
                 return store.dispatch('controlLight', payload)
