@@ -4,9 +4,9 @@ dotenv.config();
 export default class ConfigProvider {
   static get CONFIG() {
     return {
-      hueBridgeIP: '$VUE_APP_HUE_BRIDGE_IP',
-      hueUsername: '$VUE_APP_HUE_USERNAME',
-      pollingRate: '$VUE_APP_POLLING_RATE',
+      hueBridgeIP: "$VUE_APP_HUE_BRIDGE_IP",
+      hueUsername: "$VUE_APP_HUE_USERNAME",
+      pollingRate: "$VUE_APP_POLLING_RATE",
     };
   }
 

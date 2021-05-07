@@ -1,9 +1,13 @@
 ---
-    version: "2"
-    services:
-      hue-app:
-        image: kallakukku/hue-app:latest
-        container_name: hue-app
-        restart: unless-stopped
-        ports:
-          - 8899:80
+  version: "2"
+  services:
+    hue-app:
+      image: kallakukku/hue-app:latest
+      container_name: hue-app
+      restart: unless-stopped
+      environment:
+        - VUE_APP_POLLING_RATE=10000
+        - VUE_APP_HUE_BRIDGE_IP=
+        - VUE_APP_HUE_USERNAME=
+      ports:
+        - 8899:80
