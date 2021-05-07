@@ -54,7 +54,6 @@ $slider-color: whitesmoke;
   position: relative;
   display: inline-block;
   z-index: 1; // set to 1 and the button won't be blocked by the overlapping color picker
-  margin: 0.5rem;
   width: $size*1.76470588;
   height: $size;
 }
