@@ -15,6 +15,7 @@ import store from './store'
 import GroupEntities from './components/GroupEntities';
 import GroupList from './components/GroupList';
 import { mapActions } from 'vuex';
+import ConfigProvider from '../ConfigProvider';
 
 export default {
 	name: 'App',
@@ -24,7 +25,7 @@ export default {
 	},
 	data() {
 		return {
-			pollingInterval: process.env.VUE_APP_POLLING_RATE || 8000,
+			pollingInterval: ConfigProvider.value('pollingRate') || 8000,
 			updateHueStateInterval: Function,
 		};
 	},

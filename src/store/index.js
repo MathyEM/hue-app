@@ -3,6 +3,10 @@ import Vuex from 'vuex'
 import tinycolor from 'tinycolor2'
 import Gradient from "javascript-color-gradient";
 import axios from 'axios'
+import ConfigProvider from '../../ConfigProvider';
+
+const hueBridgeIP = ConfigProvider.value('hueBridgeIP')
+const hueUsername = ConfigProvider.value('hueUsername')
 
 Vue.use(Vuex)
 
@@ -146,7 +150,7 @@ export default new Vuex.Store({
 	actions: {
 		async updateLocalGroups({ commit, dispatch }, payload) {
 			try {
-				const response = await axios.get(`https://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/groups`)
+				const response = await axios.get(`https://${hueBridgeIP}/api/${hueUsername}/groups`)
 				commit('SET_LOCAL_GROUPS', response.data)
 				console.log("updateLocalGroups: ", response.data)
 				await dispatch('updateLocalGroupColors', response.data)
@@ -203,7 +207,7 @@ export default new Vuex.Store({
 
 			try {
 				await axios.put(
-					`https://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/groups/${id}/action`,
+					`https://${hueBridgeIP}/api/${hueUsername}/groups/${id}/action`,
 					{
 						on,
 						...(hue && { hue }),
@@ -223,7 +227,7 @@ export default new Vuex.Store({
 		},
 		async updateLocalLights({ commit, dispatch }) {
 			try {
-				const response = await axios.get(`https://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/lights`)
+				const response = await axios.get(`https://${hueBridgeIP}/api/${hueUsername}/lights`)
 				commit('SET_LOCAL_LIGHTS', response.data)
 				console.log("updateLocalLights: ", response.data[5].state)
 				await dispatch('updateLocalColors', response.data)
@@ -277,7 +281,7 @@ export default new Vuex.Store({
 
 			try {
 				await axios.put(
-					`https://${process.env.VUE_APP_HUE_BRIDGE_IP}/api/${process.env.VUE_APP_HUE_USERNAME}/lights/${id}/state`,
+					`https://${hueBridgeIP}/api/${hueUsername}/lights/${id}/state`,
 					{
 						on,
                         ...(hue && { hue }),
