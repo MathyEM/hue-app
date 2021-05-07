@@ -93,6 +93,7 @@ $wrapper-transition-speed: 500ms;
         flex-wrap: wrap;
         align-items: center;
         margin-bottom: 1rem;
+        row-gap: 1rem;
 
         .layout-btn {
             $btn-size: 1.5rem;
@@ -129,10 +130,8 @@ $wrapper-transition-speed: 500ms;
             }
         }
         & > .title-btn {
-            margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            margin-bottom: 1rem;
         }
         h2 {
             display: inline;
@@ -190,7 +189,7 @@ $wrapper-transition-speed: 500ms;
             margin: auto;
         }
         .group-header {
-            & > div {
+            & > .title-btn {
                 margin-left: auto;
                 margin-right: auto;
             }
