@@ -40,7 +40,6 @@ export default {
         return {
             dimmingStep: 40,
             dimmingSpeed: 600,
-            transitiontime: 5,
             startDimming: Function,
             startBrighten: Function,
         }
@@ -51,7 +50,6 @@ export default {
                 id: this.id,
                 on: on,
                 bri_inc: bri_inc,
-                transitiontime: this.transitiontime,
             }
             if (!this.isGroup) {
                 return store.dispatch('controlLight', payload)
