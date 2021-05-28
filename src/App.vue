@@ -1,6 +1,5 @@
 <template>
 	<div id="app">
-		<img alt="Vue logo" src="./assets/logo.png">
 		<div class="container">
 			<GroupList />
 			<template v-for="group, g_index in groups">
@@ -93,7 +92,7 @@ export default {
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
 	color: #2c3e50;
-	margin-top: 60px;
+	margin-top: 20px;
 
 	.container {
 		display: flex;
