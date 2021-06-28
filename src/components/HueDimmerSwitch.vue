@@ -17,7 +17,7 @@
 
 <script>
 import store from '../store'
-// import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
     name: 'HueDimmerSwitch',
@@ -29,11 +29,12 @@ export default {
         isGroup: Boolean,
     },
     computed: {
+        ...mapGetters(['lights']),
 		light() {
-			return store.state.lights[this.id];
+			return this.lights[this.id]
 		},
         state() {
-			return store.state.lights[this.id].state;
+			return this.light.state
 		},
     },
     data() {
@@ -57,27 +58,27 @@ export default {
             return store.dispatch('controlGroup', payload)
         },
         startDimmingInterval: function() {
-            this.controlLight(true, this.dimmingStep*-1);
-            var self = this;
+            this.controlLight(true, this.dimmingStep*-1)
+            var self = this
             
             this.startDimming = setInterval(function() {
-                self.controlLight(true, self.dimmingStep*-1);
+                self.controlLight(true, self.dimmingStep*-1)
             }, this.dimmingSpeed)
         },
         stopDimmingInterval: function() {
-            clearInterval(this.startDimming);
+            clearInterval(this.startDimming)
         },
 
         startBrightenInterval: function () {
-            this.controlLight(true, this.dimmingStep);
-             var self = this;
+            this.controlLight(true, this.dimmingStep)
+             var self = this
 
             this.startBrighten = setInterval(function() {
-               self.controlLight(true, self.dimmingStep);
+               self.controlLight(true, self.dimmingStep)
             }, this.dimmingSpeed)
         },
         stopBrightenInterval: function() {
-            clearInterval(this.startBrighten);
+            clearInterval(this.startBrighten)
         },
     }
 }

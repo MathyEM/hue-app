@@ -13,20 +13,21 @@ import store from '../store'
 export default {
 	name: 'OnOffSwitch',
 	props: {
+		group: {
+			type: Object,
+			required: true
+		},
 		id: {
 			type: String,
 			required: true
 		},
 	},
 	computed: {
-		group() {
-			return store.state.groups[this.id];
-		},
 		action() {
-			return store.state.groups[this.id].action;
+			return this.group.action
 		},
 		state() {
-			return store.state.groups[this.id].state;
+			return this.group.state
 		}
 	},
 	methods: {
@@ -51,29 +52,29 @@ $on-color: rgb(253, 218, 100);
 $slider-color: whitesmoke;
 
 .switch {
-  position: relative;
-  display: inline-block;
-  z-index: 1; // set to 1 and the button won't be blocked by the overlapping color picker
-  width: $size*1.76470588;
-  height: $size;
+	position: relative;
+	display: inline-block;
+	z-index: 1; // set to 1 and the button won't be blocked by the overlapping color picker
+	width: $size*1.76470588;
+	height: $size;
 }
 
 .switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
+	opacity: 0;
+	width: 0;
+	height: 0;
 }
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: $background-color;
-  -webkit-transition: .4s;
-  transition: .4s;
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: $background-color;
+	-webkit-transition: .4s;
+	transition: .4s;
 }
 
 .slider:before {
@@ -89,15 +90,15 @@ $slider-color: whitesmoke;
 }
 
 input:checked + .slider {
-  background-color: $on-color;
+	background-color: $on-color;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px $background-color;
+	box-shadow: 0 0 1px $background-color;
 }
 
 input:checked + .slider:before {
-  transform: translateX($slider-size);
+	transform: translateX($slider-size);
 }
 
 /* Rounded sliders */

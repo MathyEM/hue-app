@@ -3,7 +3,7 @@
 		<div class="container">
 			<GroupList />
 			<template v-for="group, g_index in groups">
-				<GroupEntities :key="g_index" :id="g_index" />
+				<GroupEntities :key="g_index" :group="group" :id="g_index" />
 			</template>
 		</div>
 	</div>
@@ -11,10 +11,13 @@
 
 <script>
 import store from './store'
-import GroupEntities from './components/GroupEntities';
-import GroupList from './components/GroupList';
-import { mapActions } from 'vuex';
-import ConfigProvider from '../ConfigProvider';
+import GroupEntities from './components/GroupEntities'
+import GroupList from './components/GroupList'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
+import ConfigProvider from '../ConfigProvider'
+
+const hueBridgeIP = ConfigProvider.value('hueBridgeIP')
+const hueUsername = ConfigProvider.value('hueUsername')
 
 export default {
 	name: 'App',
@@ -26,38 +29,21 @@ export default {
 		return {
 			pollingInterval: ConfigProvider.value('pollingRate') || 8000,
 			updateHueStateInterval: Function,
+			store: store,
 		};
 	},
 	computed: {
-		groups() {
-			const groups = store.state.groups;
-			var filteredGroups = {};
-
-			for (const key of Object.keys(groups)) {
-				if (groups[key].class !== "TV") {
-					filteredGroups[key] = groups[key];
-				}
-			}
-			
-			return filteredGroups;
-		},
-		lights() {
-			return store.state.lights;
-		},
-		localGroupColors() {
-			return store.state.localGroupColors;
-		}
+		...mapGetters(['groups', 'localGroupColors']),
 	},
 	methods: {
-		...mapActions([
-			'updateLocalLights',
-			'updateLocalGroups',
-		]),
+		...mapActions(['updateLocalLights']),
+		...mapMutations(['SET_HUE_BRIDGE_INFO']),
 	},
 	async mounted() {
 
 	},
 	async created() {
+		this.SET_HUE_BRIDGE_INFO({ ip: hueBridgeIP, username: hueUsername })
 		var self = this;
 		self;
 

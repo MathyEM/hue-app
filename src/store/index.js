@@ -3,18 +3,14 @@ import Vuex from 'vuex'
 import tinycolor from 'tinycolor2'
 import Gradient from "javascript-color-gradient";
 import axios from 'axios'
-import ConfigProvider from '../../ConfigProvider';
-
-const hueBridgeIP = ConfigProvider.value('hueBridgeIP')
-const hueUsername = ConfigProvider.value('hueUsername')
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		groups: {
-
-		},
+		hueBridgeIP: '',
+		hueUsername: '',
+		groups: {},
 		lights: {
 	
 		},
@@ -33,6 +29,21 @@ export default new Vuex.Store({
 		},
 	},
 	getters: {
+		groups: (state) => {
+			const groups = state.groups
+			var filteredGroups = {}
+
+			for (const key of Object.keys(groups)) {
+				if (groups[key].class !== "TV") {
+					filteredGroups[key] = groups[key]
+				}
+			}
+			
+			return filteredGroups
+		},
+		lights: (state) => state.lights,
+		localGroupColors: (state) => state.localGroupColors,
+		localColors: (state) => state.localColors,
 		getHSL: (state) => (light) => {
 			const hue = state.convertColorRange(light.hue, 65535, 360); // Convert pHue to radial hue
 			const sat = state.convertColorRange(light.sat, 254, 100);
@@ -135,22 +146,26 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		SET_LOCAL_GROUPS(state, payload) {
-			state.groups = payload;
+			state.groups = payload
 		},
 		SET_LOCAL_GROUP_COLORS(state, payload) {
-			state.localGroupColors = payload;
+			state.localGroupColors = payload
 		},
 		SET_LOCAL_LIGHTS(state, payload) {
-			state.lights = payload;
+			state.lights = payload
 		},
 		SET_LOCAL_COLORS(state, payload) {
-			state.localColors = payload;
+			state.localColors = payload
+		},
+		SET_HUE_BRIDGE_INFO(state, payload) {
+			state.hueBridgeIP = payload.ip
+			state.hueUsername = payload.username
 		},
 	},
 	actions: {
-		async updateLocalGroups({ commit, dispatch }, payload) {
+		async updateLocalGroups({ state, commit, dispatch }, payload) {
 			try {
-				const response = await axios.get(`https://${hueBridgeIP}/api/${hueUsername}/groups`)
+				const response = await axios.get(`https://${state.hueBridgeIP}/api/${state.hueUsername}/groups`)
 				commit('SET_LOCAL_GROUPS', response.data)
 				console.log("updateLocalGroups: ", response.data)
 				await dispatch('updateLocalGroupColors', response.data)
@@ -158,13 +173,13 @@ export default new Vuex.Store({
 					await dispatch('updateLocalLights')
 				}
 			} catch (error) {
-				console.log(error);
+				console.log(error)
 			}
 		},
 		async updateLocalGroupColors(context, payload) {
-			const groups = payload;
+			const groups = payload
 			console.log("updateLocalGroupColors:", payload);
-			var colors = {};
+			var colors = {}
 
 			var hsl;
 			
@@ -192,22 +207,22 @@ export default new Vuex.Store({
 					ct: ct,
 				}
 			});
-			context.commit('SET_LOCAL_GROUP_COLORS', colors);
+			context.commit('SET_LOCAL_GROUP_COLORS', colors)
 		},
 		async controlGroup(context, payload) {
 			const hsb = payload.hsl ? context.getters.getHSB(payload.hsl) : undefined;
 
-			const id = payload.id;
-			const on = payload.on;
-			const hue = hsb ? Math.round(hsb.hue) : undefined;
-			const sat = hsb ? Math.round(hsb.sat) : undefined;
-			const bri = hsb ? Math.round(hsb.bri) : undefined;
-			const ct = payload.ct || undefined;
-			const bri_inc = payload.bri_inc || undefined;
+			const id = payload.id
+			const on = payload.on
+			const hue = hsb ? Math.round(hsb.hue) : undefined
+			const sat = hsb ? Math.round(hsb.sat) : undefined
+			const bri = hsb ? Math.round(hsb.bri) : undefined
+			const ct = payload.ct || undefined
+			const bri_inc = payload.bri_inc || undefined
 
 			try {
 				await axios.put(
-					`https://${hueBridgeIP}/api/${hueUsername}/groups/${id}/action`,
+					`https://${context.state.hueBridgeIP}/api/${context.state.hueUsername}/groups/${id}/action`,
 					{
 						on,
 						...(hue && { hue }),
@@ -217,41 +232,41 @@ export default new Vuex.Store({
 						...(bri_inc && { bri_inc }),
 					}
 				).then(function(response) {
-					console.log("controlGroup",response);
+					console.log("controlGroup",response)
 				})
-				await context.dispatch('updateLocalGroups');
+				await context.dispatch('updateLocalGroups')
 				
 			} catch (error) {
-				console.log(error);
+				console.log(error)
 			}
 		},
-		async updateLocalLights({ commit, dispatch }) {
+		async updateLocalLights({ state, commit, dispatch }) {
 			try {
-				const response = await axios.get(`https://${hueBridgeIP}/api/${hueUsername}/lights`)
+				const response = await axios.get(`https://${state.hueBridgeIP}/api/${state.hueUsername}/lights`)
 				commit('SET_LOCAL_LIGHTS', response.data)
 				console.log("updateLocalLights: ", response.data[5].state)
 				await dispatch('updateLocalColors', response.data)
 				await dispatch('updateLocalGroups', { lightUpdate: true })
 			} catch (error) {
-				console.log(error);
+				console.log(error)
 			}
 		},
 		async updateLocalColors(context, payload) {
-			const lights = payload;
-			console.log("updateLocalColors:", payload);
-			var colors = {};
+			const lights = payload
+			console.log("updateLocalColors:", payload)
+			var colors = {}
 
-			var hsl;
+			var hsl
 			
 			Object.keys(lights).forEach(id => {
 				const ct = lights[id].state.ct;
 				if (lights[id].state.colormode !== "ct") {
-					hsl = context.getters.getHSL(lights[id].state);
+					hsl = context.getters.getHSL(lights[id].state)
 				} else {
-					hsl = context.getters.colorTempToHSL(ct);
-					let color = tinycolor(`hsl(${hsl.hue}, ${hsl.saturation}%, ${hsl.luminosity}%)`);
-					const brightness = context.state.convertColorRange(lights[id].state.bri, 254, 50);
-					color = color.darken(50-brightness).toHsl();
+					hsl = context.getters.colorTempToHSL(ct)
+					let color = tinycolor(`hsl(${hsl.hue}, ${hsl.saturation}%, ${hsl.luminosity}%)`)
+					const brightness = context.state.convertColorRange(lights[id].state.bri, 254, 50)
+					color = color.darken(50-brightness).toHsl()
 					hsl = {
 						hue: color.h,
 						saturation: color.s*100,
@@ -271,17 +286,17 @@ export default new Vuex.Store({
 		async controlLight(context, payload) {
 			const hsb = payload.hsl ? context.getters.getHSB(payload.hsl) : undefined;
 
-			const id = payload.id;
-			const on = payload.on;
-			const hue = hsb ? Math.round(hsb.hue) : undefined;
-			const sat = hsb ? Math.round(hsb.sat) : undefined;
-			const bri = hsb ? Math.round(hsb.bri) : undefined;
-			const ct = payload.ct || undefined;
-			const bri_inc = payload.bri_inc || undefined;
+			const id = payload.id
+			const on = payload.on
+			const hue = hsb ? Math.round(hsb.hue) : undefined
+			const sat = hsb ? Math.round(hsb.sat) : undefined
+			const bri = hsb ? Math.round(hsb.bri) : undefined
+			const ct = payload.ct || undefined
+			const bri_inc = payload.bri_inc || undefined
 
 			try {
 				await axios.put(
-					`https://${hueBridgeIP}/api/${hueUsername}/lights/${id}/state`,
+					`https://${context.state.hueBridgeIP}/api/${context.state.hueUsername}/lights/${id}/state`,
 					{
 						on,
                         ...(hue && { hue }),
@@ -291,12 +306,12 @@ export default new Vuex.Store({
 						...(bri_inc && { bri_inc }),
 					}
 				).then(function(response) {
-					console.log("controlLight",response);
+					console.log("controlLight",response)
 				})
-				await context.dispatch('updateLocalLights');
+				await context.dispatch('updateLocalLights')
 				
 			} catch (error) {
-				console.log(error);
+				console.log(error)
 			}
 		},
 	},

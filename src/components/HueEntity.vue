@@ -8,10 +8,16 @@
             <ColorTemperature :id="id" :isGroup="isGroup" />
         </div>
         <div v-else class="color-picker-wrapper">
-            <ColorPicker v-bind="whiteColor" class="color-picker white-disabled" :class="{ 'white-on': group.state.any_on, 'off': !group.state.any_on }" :initially-collapsed="true" />
+            <ColorPicker
+                v-bind="whiteColor"
+                class="color-picker white-disabled"
+                :class="{ 'white-on': group.state.any_on, 'off': !group.state.any_on }"
+                :initially-collapsed="true"
+            />
         </div>
         <HueDimmerSwitch :id="id" :isGroup="isGroup" />
     </div>
+    
     <div v-else class="entity-wrapper">
         <h3 class="lamp-title">{{ light.name }}</h3>
         <div v-if="state.hue" class="color-picker-wrapper">
@@ -19,19 +25,25 @@
             <ColorTemperature :id="id" />
         </div>
         <div v-else class="color-picker-wrapper">
-            <ColorPicker v-bind="whiteColor" class="color-picker white-disabled" :class="{ 'white-on': state.on, 'off': !state.on }" :initially-collapsed="true" />
+            <ColorPicker
+                v-bind="whiteColor"
+                class="color-picker white-disabled"
+                :class="{ 'white-on': state.on, 'off': !state.on }"
+                :initially-collapsed="true"
+            />
         </div>
         <HueDimmerSwitch :id="id" />
     </div>
 </template>
 
 <script>
-import store from '../store';
-import ColorPicker from '@radial-color-picker/vue-color-picker';
+import store from '../store'
+import ColorPicker from '@radial-color-picker/vue-color-picker'
 import CombinedColorPicker from './CombinedColorPicker.vue'
-import ColorTemperature from './ColorTemperature.vue';
+import ColorTemperature from './ColorTemperature.vue'
 import HueDimmerSwitch from './HueDimmerSwitch'
 import tinycolor from 'tinycolor2'
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'HueEntity',
@@ -42,6 +54,10 @@ export default {
         HueDimmerSwitch,
     },
     props: {
+        group: {
+            type: Object,
+            required: true
+        },
         id: {
             type: String,
             required: true
@@ -54,23 +70,18 @@ export default {
         }
     },
     computed: {
-        group() {
-            if (this.isGroup) {
-                return store.state.groups[this.id]
-            }
-            return null;
-        },
+		...mapGetters(['lights']),
 		light() {
             if (!this.isGroup) {
-                return store.state.lights[this.id];
+                return this.lights[this.id];
             }
             return null
 		},
         state() {
             if (!this.isGroup) {
-                return store.state.lights[this.id].state;
+                return this.light.state;
             }
-            return store.state.groups[this.id].action;
+            return this.group.action;
 		},
         whiteColor() {
             let color = tinycolor('rgb(255, 223, 116)');

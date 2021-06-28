@@ -4,6 +4,7 @@
 
 <script>
 import store from '../store'
+import { mapGetters } from 'vuex'
 
 export default {
 	name: 'ColorTemperature',
@@ -18,11 +19,12 @@ export default {
         }
     },
 	computed: {
+		...mapGetters(['localColors', 'localGroupColors']),
         color() {
             if (!this.isGroup) { // if not a group
-				return store.state.localColors[this.id];
+				return this.localColors[this.id];
 			} else {
-				return store.state.localGroupColors[this.id];
+				return this.localGroupColors[this.id];
 			}
         },
     },

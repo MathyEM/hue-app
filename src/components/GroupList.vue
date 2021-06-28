@@ -12,7 +12,7 @@
         </div>
         <div class="group-wrapper">
             <div v-for="group, g_index in groups" :key="g_index" class="entity-container">
-                <HueEntity :id="g_index" :isGroup="true" />
+                <HueEntity :group="group" :id="g_index" :isGroup="true" />
             </div>
         </div>
     </div>
@@ -21,7 +21,9 @@
 <script>
 import store from '../store'
 import HueEntity from './HueEntity.vue'
-import { setContainerHeight } from '../assets/js/functions.js';
+import { setContainerHeight } from '../assets/js/functions.js'
+import { mapGetters } from 'vuex'
+
 
 export default {
 	name: 'GroupList',
@@ -30,46 +32,38 @@ export default {
 	},
 	data() {
 		return {
-
+			visible: true,
         };
 	},
 	computed: {
-		groups() {
-			const groups = store.state.groups;
-			var filteredGroups = {};
+		...mapGetters(['groups']),
+	},
+	methods: {
 
-			for (const key of Object.keys(groups)) {
-				if (groups[key].class !== "TV") {
-					filteredGroups[key] = groups[key];
-				}
-			}
-			
-			return filteredGroups;
-		},
 	},
 	mounted() {
-		var group;
+		var group
 		this.$nextTick().then(() => {
-			group = document.querySelector('.group-wrapper');
-			var btn = document.querySelector('.btn-group');
+			group = document.querySelector('.group-wrapper')
+			var btn = document.querySelector('.btn-group')
 
 			btn.addEventListener('click', function () {
 				btn.classList.toggle("visible")
-				setContainerHeight(group);
+				setContainerHeight(group)
 			})
 
 			group.addEventListener('transitionend', () => {
 				if (group.style.height !== "0px") {
-					group.style.height = "auto";
+					group.style.height = "auto"
 				}
-			})			
+			})
 		})
         const unsubscribe = store.subscribe((mutation) => {
 			if (mutation.type == "SET_LOCAL_GROUPS") {
 				this.$nextTick().then(() => {
-					group.style.height = group.scrollHeight + "px";					
+					group.style.height = group.scrollHeight + "px"
 				})
-				unsubscribe();
+				unsubscribe()
 			}
 		})
 		

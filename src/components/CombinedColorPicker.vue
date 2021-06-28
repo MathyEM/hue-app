@@ -8,7 +8,8 @@
 
 <script>
 import store from '../store';
-import ColorPicker from '@radial-color-picker/vue-color-picker';
+import ColorPicker from '@radial-color-picker/vue-color-picker'
+import { mapGetters } from 'vuex'
 
 
 export default {
@@ -27,11 +28,12 @@ export default {
 		}
 	},
 	computed: {
+		...mapGetters(['localColors', 'localGroupColors']),
         color() {
 			if (!this.isGroup) { // if not a group
-				return store.state.localColors[this.id];
+				return this.localColors[this.id];
 			} else {
-				return store.state.localGroupColors[this.id];
+				return this.localGroupColors[this.id];
 			}
         },
 		lumGradient() {

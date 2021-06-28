@@ -10,7 +10,7 @@
                 </label>
             </div>
             <div class="group-controls">
-                <OnOffSwitch :id="id" />
+                <OnOffSwitch :group="group" :id="id" />
                 <div v-if="group.action.hue" class="color-picker-container">
                     <div class="color-picker-wrapper">
                         <CombinedColorPicker :isGroup="true" :id="id" :onClass="{ 'off': !group.state.any_on }" />
@@ -21,19 +21,19 @@
         </div>
         <div class="group-wrapper" :class="'group-'+id">
             <div class="entity-container" v-for="light, l_index in group.lights" :key="l_index">
-                <HueEntity :id="light" />
+                <HueEntity :group="group" :id="light" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import store from '../store'
+// import store from '../store'
 import HueEntity from './HueEntity.vue'
 import CombinedColorPicker from './CombinedColorPicker.vue'
-import ColorTemperature from './ColorTemperature.vue';
-import OnOffSwitch from './OnOffSwitch.vue';
-import { setContainerHeight } from '../assets/js/functions.js';
+import ColorTemperature from './ColorTemperature.vue'
+import OnOffSwitch from './OnOffSwitch.vue'
+import { setContainerHeight } from '../assets/js/functions.js'
 
 
 export default {
@@ -45,19 +45,20 @@ export default {
 		OnOffSwitch,
 	},
     props: {
+        group: {
+            type: Object,
+            required: true
+        },
         id: {
             type: String,
             required: true
-        },
+        }
     },
     computed: {
-        group() {
-            return store.state.groups[this.id]
-        },
     },
     mounted() {
         this.$nextTick(function () {
-            var group = document.querySelector('.group-'+this.id);
+            let group = document.querySelector('.group-'+this.id);
             group.style.height = group.scrollHeight + "px";
 
             let btn = document.querySelector('.btn-group-'+this.id);
