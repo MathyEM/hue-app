@@ -2,6 +2,8 @@
   "name": "hue-app-v2",
   "version": "2.7.0",
   "private": true,
+  "main": "./hue-app.common.js",
+  "style": "./hue-app.css",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

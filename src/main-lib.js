@@ -1,5 +1,7 @@
 import GroupList from './components/GroupList.vue'
-import store from './store'
+import GroupEntities from './components/GroupEntities.vue'
+import HueEntity from './components/HueEntity.vue'
+import store from './store/module'
 
 export default {
     install (Vue, options) {
@@ -9,6 +11,8 @@ export default {
         
         options.store.registerModule('hueapp', store)
 
-        Vue.component('group-list', GroupList)
+        Vue.component('GroupList', GroupList)
+        Vue.component('GroupEntities', GroupEntities)
+        Vue.component('HueEntity', HueEntity)
     }
   }

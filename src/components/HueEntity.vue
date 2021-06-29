@@ -37,13 +37,12 @@
 </template>
 
 <script>
-import store from '../store'
 import ColorPicker from '@radial-color-picker/vue-color-picker'
 import CombinedColorPicker from './CombinedColorPicker.vue'
 import ColorTemperature from './ColorTemperature.vue'
 import HueDimmerSwitch from './HueDimmerSwitch'
 import tinycolor from 'tinycolor2'
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
     name: 'HueEntity',
@@ -85,7 +84,7 @@ export default {
 		},
         whiteColor() {
             let color = tinycolor('rgb(255, 223, 116)');
-            const brightness = store.state.convertColorRange(this.state.bri, 254, 50);  //the tinycolor darken() method goes from 0-100
+            const brightness = this.convertColorRange(this.state.bri, 254, 50);  //the tinycolor darken() method goes from 0-100
             color = color.darken(50-brightness);                                     //but at 73, the color goes black.
             const hsl = color.toHsl();
             return {
@@ -96,7 +95,7 @@ export default {
         },
     },
     methods: {
-        
+        ...mapState(['convertColorRange']),
     },
     created() {
 
