@@ -53,7 +53,7 @@ export default {
 
 		this.updateLocalLights();
 	},
-	destroy() {
+	beforeDestroy() {
 		clearInterval(this.updateHueStateInterval)
 	}
 }
