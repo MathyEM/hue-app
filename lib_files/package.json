@@ -1,7 +1,6 @@
 {
-  "name": "hue-app-v2",
+  "name": "local-hue-app",
   "version": "2.7.0",
-  "private": true,
   "main": "./hue-app.common.js",
   "style": "./hue-app.css",
   "scripts": {

@@ -1,11 +1,11 @@
 {
   "name": "hue-app-v2",
-  "version": "2.7.0",
+  "version": "2.7.2",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-lib": "vue-cli-service build --target lib --name hue-app src/main-lib.js",
+    "build-lib": "vue-cli-service build --target lib --name local-hue-app src/main-lib.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

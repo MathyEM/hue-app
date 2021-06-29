@@ -1,1 +1,1 @@
-declare module 'hue-app';
+declare module 'local-hue-app';
