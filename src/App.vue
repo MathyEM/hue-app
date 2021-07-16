@@ -5,6 +5,9 @@
 			<template v-for="group, g_index in groups">
 				<GroupEntities :key="g_index" :group="group" :id="g_index" />
 			</template>
+			<h3>Hello</h3>
+			<br>
+			<HueEntitySmall :id="'4'" />
 		</div>
 	</div>
 </template>
@@ -12,6 +15,7 @@
 <script>
 import store from './store'
 import GroupEntities from './components/GroupEntities'
+import HueEntitySmall from './components/HueEntitySmall'
 import GroupList from './components/GroupList'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import ConfigProvider from '../ConfigProvider'
@@ -24,6 +28,7 @@ export default {
 	components: {
 		GroupEntities,
 		GroupList,
+		HueEntitySmall,
 	},
 	data() {
 		return {

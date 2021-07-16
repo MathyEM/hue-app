@@ -10,7 +10,7 @@
                 </label>
             </div>
             <div class="group-controls">
-                <OnOffSwitch :group="group" :id="id" />
+                <OnOffSwitch :id="id" />
                 <div v-if="group.action.hue" class="color-picker-container">
                     <div class="color-picker-wrapper">
                         <CombinedColorPicker :isGroup="true" :id="id" :onClass="{ 'off': !group.state.any_on }" />
