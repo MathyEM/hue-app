@@ -1,8 +1,8 @@
 {
   "name": "local-hue-app",
   "version": "2.7.0",
-  "main": "./hue-app.common.js",
-  "style": "./hue-app.css",
+  "main": "./local-hue-app.common.js",
+  "style": "./local-hue-app.css",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

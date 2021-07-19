@@ -1,6 +1,7 @@
 import GroupList from './components/GroupList.vue'
 import GroupEntities from './components/GroupEntities.vue'
 import HueEntity from './components/HueEntity.vue'
+import HueEntitySmall from './components/HueEntitySmall.vue'
 import store from './store/module'
 
 export default {
@@ -14,5 +15,8 @@ export default {
         Vue.component('GroupList', GroupList)
         Vue.component('GroupEntities', GroupEntities)
         Vue.component('HueEntity', HueEntity)
+        Vue.component('HueEntitySmall', HueEntitySmall)
     }
   }
+
+// yarn build --target lib --name local-hue-app src/main-lib.js
