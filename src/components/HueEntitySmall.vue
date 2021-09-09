@@ -1,39 +1,18 @@
 <template>
-    <div v-if="isGroup" class="small-entity-wrapper">
-        <template v-if="group">
-            <h3 class="lamp-title">{{ group.name }}</h3>
+    <div class="small-entity-wrapper">
+        <template v-if="light || group">
+            <h3 class="lamp-title">{{ lightName }}</h3>
             <div class="control-wrapper">
-                <OnOffSwitch class="on-off-switch" :big="true" :id="id" />
-                <div v-if="group.action.hue" class="color-picker-wrapper">
-                    <CombinedColorPicker :id="id" :onClass="{ 'off': !group.state.any_on }" :isGroup="isGroup" />
-                    <ColorTemperature :id="id" :isGroup="isGroup" />
+                <OnOffSwitch class="on-off-switch" :big="true" :isGroup="isGroup" :id="id" />
+                <div v-if="hueState" class="color-picker-wrapper">
+                    <CombinedColorPicker :isGroup="isGroup" :id="id" :onClass="{ 'off': !onState }" />
+                    <ColorTemperature :isGroup="isGroup" :id="id" />
                 </div>
                 <div v-else class="color-picker-wrapper">
                     <ColorPicker
                         v-bind="whiteColor"
                         class="color-picker white-disabled"
-                        :class="{ 'white-on': group.state.any_on, 'off': !group.state.any_on }"
-                        :initially-collapsed="true"
-                    />
-                </div>
-            </div>
-        </template>
-    </div>
-    
-    <div v-else class="small-entity-wrapper">
-        <template v-if="light">
-            <h3 class="lamp-title">{{ light.name }}</h3>
-            <div class="control-wrapper">
-                <OnOffSwitch class="on-off-switch" :big="true" :isGroup="false" :id="id" />
-                <div v-if="state.hue" class="color-picker-wrapper">
-                    <CombinedColorPicker :id="id" :onClass="{ 'off': !state.on }" />
-                    <ColorTemperature :id="id" />
-                </div>
-                <div v-else class="color-picker-wrapper">
-                    <ColorPicker
-                        v-bind="whiteColor"
-                        class="color-picker white-disabled"
-                        :class="{ 'white-on': state.on, 'off': !state.on }"
+                        :class="{ 'white-on': onState, 'off': !onState }"
                         :initially-collapsed="true"
                     />
                 </div>
@@ -103,6 +82,24 @@ export default {
                 luminosity: hsl.l*100,
             }
         },
+        lightName() {
+            if (this.isGroup) {
+                return this.group.name
+            }
+            return this.light.name
+        },
+        onState() {
+            if (this.isGroup) {
+                return this.group.state.any_on
+            }
+            return this.state.on
+        },
+        hueState() {
+            if (this.isGroup) {
+                return this.group.action.hue
+            }
+            return this.state.hue
+        }
     },
     methods: {
         ...mapState(['convertColorRange']),
@@ -117,6 +114,8 @@ export default {
 
 <style lang="scss">
 @import '~@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css';
+@import '../assets/scss/_colors.scss';
+@import '../assets/scss/_btn-vars.scss';
 
 $border-radius: 4px;
 $padding: 1rem;
@@ -143,14 +142,23 @@ $plane-depth: 4px;
                 -1px 2px 3px hsla(0,0%,0%,.25);
 
     .control-wrapper {
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: flex-end;
 
         .on-off-switch {
-            transform: rotateZ(-90deg);
-            height: min-content;
-            margin: 35px 0px;
+            // transform: rotateZ(-90deg);
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            aspect-ratio: 0.599;
+
+            button {
+                height: 50%;
+                width: unset;
+                color: $gray;
+            }
         }
     }
 

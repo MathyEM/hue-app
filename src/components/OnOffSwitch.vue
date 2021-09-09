@@ -1,9 +1,13 @@
 <template>
-	<div class="switch-container">
+	<!-- <div class="switch-container">
 		<label class="switch" :class="{ big: big}">
 			<input type="checkbox" :checked="onState" @change="control(!onState)">
 			<span class="slider round"></span>
 		</label>
+	</div> -->
+	<div class="switch-container">
+		<button :class="{ on: onState || onClass===true }" @click="control(true); onClass=true">I</button>
+		<button :class="{ on: !onState || onClass===false }" @click="control(false); onClass=false">O</button>
 	</div>
 </template>
 
@@ -23,6 +27,10 @@ export default {
 			required: true,
 		},
 		big: Boolean,
+		onClass: {
+			type: Boolean,
+			default: undefined,
+		}
 	},
 	computed: {
 		...mapGetters(['lights', 'groups']),
@@ -55,6 +63,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/scss/_colors.scss';
+@import '../assets/scss/_btn-vars.scss';
+
 $size: 29px;
 $slider-size: $size*0.764706;
 $gap: ($size - $slider-size) / 2;
@@ -68,6 +79,24 @@ $gap: ($size - $slider-size) / 2;
 $background-color: lightgray;
 $on-color: rgb(253, 218, 100);
 $slider-color: whitesmoke;
+
+.switch-container {
+	display: flex;
+	flex-direction: row;
+	aspect-ratio: 2;
+	height: 100%;
+
+	button {
+		width: 2rem;
+		border: 1px $lightgray solid;
+		color: $gray;
+
+		&:active, &.on {
+			background-color: darken($off-white, 9%);
+			border-color: darken($lightgray, 7%);;
+		}
+	}
+}
 
 .switch {
 	position: relative;
