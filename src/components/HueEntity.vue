@@ -42,7 +42,8 @@ import CombinedColorPicker from './CombinedColorPicker.vue'
 import ColorTemperature from './ColorTemperature.vue'
 import HueDimmerSwitch from './HueDimmerSwitch'
 import tinycolor from 'tinycolor2'
-import { mapGetters, mapState } from 'vuex';
+import store from '@/store'
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'HueEntity',
@@ -74,7 +75,7 @@ export default {
             if (!this.isGroup) {
                 return this.lights[this.id];
             }
-            return null
+            return this.group
 		},
         state() {
             if (!this.isGroup) {
@@ -84,7 +85,8 @@ export default {
 		},
         whiteColor() {
             let color = tinycolor('rgb(255, 223, 116)');
-            const brightness = this.convertColorRange(this.state.bri, 254, 50);  //the tinycolor darken() method goes from 0-100
+            let bri = this.state.bri;
+            let brightness = store.state.module.convertColorRange(bri, 254, 50, "this.light.name");  //the tinycolor darken() method goes from 0-100
             color = color.darken(50-brightness);                                     //but at 73, the color goes black.
             const hsl = color.toHsl();
             return {
@@ -95,7 +97,7 @@ export default {
         },
     },
     methods: {
-        ...mapState(['convertColorRange']),
+        
     },
     created() {
 

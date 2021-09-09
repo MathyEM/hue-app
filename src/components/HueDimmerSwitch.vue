@@ -39,8 +39,8 @@ export default {
     },
     data() {
         return {
-            dimmingStep: 40,
-            dimmingSpeed: 600,
+            dimmingStep: 20,
+            dimmingSpeed: 200,
             startDimming: Function,
             startBrighten: Function,
         }

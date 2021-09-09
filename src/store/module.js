@@ -17,9 +17,12 @@ const state = {
     localGroupColors: {
 
     },
-    convertColorRange: function (prop, from, to) {
+    convertColorRange: function (prop, from, to, name) {
+        if (name == undefined) {
+            name = "ikke defineret"
+        }
         const propRatio = to/from;
-    
+        console.log(name, prop);
         return prop*propRatio;
     },
 }
