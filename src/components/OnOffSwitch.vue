@@ -1,7 +1,7 @@
 <template>
 	<div class="switch-container">
-		<button :class="{ on: onState || onClass===true }" @click="control(true); onClass=true">I</button>
-		<button :class="{ on: !onState || onClass===false }" @click="control(false); onClass=false">O</button>
+		<button :class="{ on: onState }" @click="control(true)">I</button>
+		<button :class="{ on: !onState }" @click="control(false)">O</button>
 	</div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
 	},
 	data () {
 		return {
-			onClass: undefined
+			
 		}
 	},
 	computed: {
