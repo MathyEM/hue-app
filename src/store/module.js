@@ -22,7 +22,6 @@ const state = {
             name = "ikke defineret"
         }
         const propRatio = to/from;
-        console.log(name, prop);
         return prop*propRatio;
     },
 }
