@@ -19,7 +19,6 @@ const state = {
     },
     convertColorRange: function (prop, from, to) {
         const propRatio = to/from;
-    
         return prop*propRatio;
     },
 }
