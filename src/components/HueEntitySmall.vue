@@ -1,20 +1,16 @@
 <template>
     <div class="small-entity-wrapper">
         <template v-if="light || group">
-            <h3 class="lamp-title">{{ lightName }}</h3>
             <div class="control-wrapper">
                 <OnOffSwitch class="on-off-switch" :big="true" :isGroup="isGroup" :id="id" />
-                <div v-if="hueState" class="color-picker-wrapper">
-                    <CombinedColorPicker :isGroup="isGroup" :id="id" :onClass="{ 'off': !onState }" />
-                    <ColorTemperature :isGroup="isGroup" :id="id" />
-                </div>
-                <div v-else class="color-picker-wrapper">
-                    <ColorPicker
-                        v-bind="whiteColor"
-                        class="color-picker white-disabled"
-                        :class="{ 'white-on': onState, 'off': !onState }"
-                        :initially-collapsed="true"
-                    />
+                <div class="color-title-wrapper">
+                    <h3 class="lamp-title">{{ lightName }}</h3>
+                    <div class="single-control-wrapper">
+                        <ColorTemperature :isGroup="isGroup" :id="id" />
+                    </div>
+                    <div class="single-control-wrapper">
+                        <ColorTemperature :isGroup="isGroup" :id="id" />
+                    </div>
                 </div>
             </div>
         </template>
@@ -22,8 +18,6 @@
 </template>
 
 <script>
-import ColorPicker from '@radial-color-picker/vue-color-picker'
-import CombinedColorPicker from './CombinedColorPicker.vue'
 import ColorTemperature from './ColorTemperature.vue'
 import OnOffSwitch from './OnOffSwitch.vue'
 import tinycolor from 'tinycolor2'
@@ -32,9 +26,7 @@ import { mapGetters, mapState } from 'vuex'
 export default {
     name: 'HueEntitySmall',
     components: {
-        ColorPicker,
         ColorTemperature,
-        CombinedColorPicker,
         OnOffSwitch,
     },
     props: {
@@ -125,7 +117,7 @@ $plane-depth: 4px;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    width: 16.5rem;
+    width: fit-content;
     padding: $padding;
     margin-bottom: 2rem;
 
@@ -143,13 +135,15 @@ $plane-depth: 4px;
 
     .control-wrapper {
         height: 100%;
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: space-between;
+        gap: 1rem;
 
         .on-off-switch {
             // transform: rotateZ(-90deg);
-            width: 50%;
+            width: auto;
             display: flex;
             flex-direction: column;
             aspect-ratio: 0.599;
@@ -160,27 +154,35 @@ $plane-depth: 4px;
                 color: $gray;
             }
         }
-    }
 
-    .color-temperature {
-        padding-top: 1rem;
-        padding-bottom: 1.2rem;
-    }
+        .color-title-wrapper {
+            position: relative;
+            width: unset;
+            display: grid;
+            grid-template-rows: 1fr 2fr 2fr;
+            height: 100%;
 
-    a {
-        color: inherit;
-        z-index: 1;
-    }
+            .single-control-wrapper {
+                padding-top: 1rem;
+                padding-bottom: 1.2rem;
 
+                &:first-of-type {
+                    padding-bottom: 0;
+                }
+                &:not(:first-of-type) {
+                    padding-top: 0;
+                }
+            }
+
+            a {
+                color: inherit;
+                z-index: 1;
+            }
+        }
+
+        
+    }
 }
 
-.color-picker-wrapper {
-    position: relative;
-    width: fit-content;
-    margin: auto;
 
-    .color-picker.white-disabled {
-        pointer-events: none;
-    }
-}
 </style>
