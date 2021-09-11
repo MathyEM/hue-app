@@ -86,7 +86,7 @@ $thumb-margin-top: ( $thumb-height * -0.5 ) + ( $track-height * 0.5 );
 		height: $track-height;
 		border: 1px solid lightgray;
 		border-radius: 2px;
-		background: linear-gradient(90deg, #000, #ffde72);
+		background: linear-gradient(90deg, #433b1e, #ffde72);
 	}
 }
 </style>
