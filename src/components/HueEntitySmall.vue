@@ -5,11 +5,11 @@
                 <OnOffSwitch class="on-off-switch" :big="true" :isGroup="isGroup" :id="id" />
                 <div class="color-title-wrapper">
                     <h3 class="lamp-title">{{ lightName }}</h3>
-                    <div class="single-control-wrapper">
+                    <div v-if="hueState" class="single-control-wrapper">
                         <ColorTemperature :isGroup="isGroup" :id="id" />
                     </div>
                     <div class="single-control-wrapper">
-                        <ColorTemperature :isGroup="isGroup" :id="id" />
+                        <BrightnessSlider :isGroup="isGroup" :id="id" />
                     </div>
                 </div>
             </div>
@@ -19,6 +19,7 @@
 
 <script>
 import ColorTemperature from './ColorTemperature.vue'
+import BrightnessSlider from './BrightnessSlider.vue'
 import OnOffSwitch from './OnOffSwitch.vue'
 import tinycolor from 'tinycolor2'
 import { mapGetters, mapState } from 'vuex'
@@ -28,6 +29,7 @@ export default {
     components: {
         ColorTemperature,
         OnOffSwitch,
+        BrightnessSlider,
     },
     props: {
         id: {

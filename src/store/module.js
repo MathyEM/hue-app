@@ -205,12 +205,13 @@ const actions = {
     },
     async controlGroup(context, payload) {
         const hsb = payload.hsl ? context.getters.getHSB(payload.hsl) : undefined;
+        console.log('controlGroup', payload.bri);
 
         const id = payload.id
         const on = payload.on
         const hue = hsb ? Math.round(hsb.hue) : undefined
         const sat = hsb ? Math.round(hsb.sat) : undefined
-        const bri = hsb ? Math.round(hsb.bri) : undefined
+        const bri = hsb ? Math.round(hsb.bri) : undefined ?? payload.bri
         const ct = payload.ct || undefined
         const bri_inc = payload.bri_inc || undefined
 
@@ -284,7 +285,7 @@ const actions = {
         const on = payload.on
         const hue = hsb ? Math.round(hsb.hue) : undefined
         const sat = hsb ? Math.round(hsb.sat) : undefined
-        const bri = hsb ? Math.round(hsb.bri) : undefined
+        const bri = hsb ? Math.round(hsb.bri) : undefined ?? payload.bri
         const ct = payload.ct || undefined
         const bri_inc = payload.bri_inc || undefined
 
