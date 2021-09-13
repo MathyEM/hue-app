@@ -123,7 +123,8 @@ const getters = {
         const ctMax = 500;
         const ctRatio = 100/(ctMax-ctMin);
 
-        const ctPercent = Math.round(ctRatio*(colorTemp-ctMin));
+        let ctPercent = Math.round(ctRatio*(colorTemp-ctMin));
+        if (ctPercent < 1) ctPercent = 1
 
         // convert the color to hsl
         const color = tinycolor(getters.getCT(ctPercent));
