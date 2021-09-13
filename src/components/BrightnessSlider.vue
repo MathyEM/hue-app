@@ -1,5 +1,5 @@
 <template>
-	<input type="range" class="brightness" name="brightness" id="brightness" min="0" max="254" :value="brightness" @change="onBriInput">
+	<input type="range" class="brightness" name="brightness" id="brightness" :step="brightnessStep" min="1" max="254" :value="brightness" @change="onBriInput">
 </template>
 
 <script>
@@ -11,6 +11,7 @@ export default {
 	props: {
 		isGroup: Boolean,
 		id: String,
+		brightnessStep: Number,
 	},
 	data() {
         return {
