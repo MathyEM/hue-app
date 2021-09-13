@@ -6,10 +6,10 @@
                 <div class="color-title-wrapper">
                     <h3 class="lamp-title">{{ lightName }}</h3>
                     <div v-if="hueState" class="single-control-wrapper">
-                        <ColorTemperature :isGroup="isGroup" :id="id" />
+                        <ColorTemperature :colorTemperatureStep="colorTemperatureStep" :isGroup="isGroup" :id="id" />
                     </div>
                     <div class="single-control-wrapper">
-                        <BrightnessSlider :isGroup="isGroup" :id="id" />
+                        <BrightnessSlider :brightnessStep="brightnessStep" :isGroup="isGroup" :id="id" />
                     </div>
                 </div>
             </div>
@@ -38,7 +38,9 @@ export default {
         },
         isGroup: {
             Boolean,
-        }
+        },
+        brightnessStep: Number,
+        colorTemperatureStep: Number,
     },
     data() {
         return {

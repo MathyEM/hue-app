@@ -7,7 +7,7 @@
 			</template>
 			<h3>Hello</h3>
 			<br>
-			<HueEntitySmall :isGroup="false" :id="'7'" />
+			<HueEntitySmall :colorTemperatureStep="1" :brightnessStep="15.8125" :isGroup="true" :id="'1'" />
 		</div>
 	</div>
 </template>

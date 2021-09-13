@@ -1,5 +1,5 @@
 <template>
-	<input type="range" class="color-temperature" name="color-temperature" id="color-temperature" min="153" max="500" :value="color.ct" @change="onCTInput">
+	<input type="range" class="color-temperature" name="color-temperature" id="color-temperature" :step="colorTemperatureStep" min="155" max="500" :value="color.ct" @change="onCTInput">
 </template>
 
 <script>
@@ -12,6 +12,7 @@ export default {
 		isGroup: Boolean,
 		id: String,
 		colorTemperature: Number,
+		colorTemperatureStep: Number,
 	},
 	data() {
         return {
