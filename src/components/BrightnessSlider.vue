@@ -31,14 +31,12 @@ export default {
 	methods: {
 		async onBriInput(e) {
             const brightness = parseInt(e.target.value);
-            console.log(brightness);
 
             const payload = {
                 id: this.id,
                 on: true,
                 bri: brightness,
             }
-            console.log(payload);
 
 			if (!this.isGroup) { // if light
 				await store.dispatch('controlLight', payload)
