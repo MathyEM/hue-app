@@ -1,6 +1,6 @@
 {
   "name": "local-hue-app",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "main": "./local-hue-app.common.js",
   "style": "./local-hue-app.css",
   "scripts": {
